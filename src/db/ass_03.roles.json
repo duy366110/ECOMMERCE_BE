@@ -1,0 +1,45 @@
+[{
+  "_id": {
+    "$oid": "64d5ed5451bf582d55c40d88"
+  },
+  "name": "Admin",
+  "users": [
+    {
+      "$oid": "64f98df89e105fdaad3b1bdd"
+    }
+  ],
+  "__v": 5
+},
+{
+  "_id": {
+    "$oid": "64d5ed5a51bf582d55c40d8b"
+  },
+  "name": "Client",
+  "users": [
+    {
+      "$oid": "64f991fbbc5ce90614d4ffca"
+    },
+    {
+      "$oid": "64ff316202ac4aa7310ae094"
+    },
+    {
+      "$oid": "65007c09669a2ebd94b6c9d6"
+    },
+    {
+      "$oid": "65012f6e196142537859dda1"
+    }
+  ],
+  "__v": 32
+},
+{
+  "_id": {
+    "$oid": "64f98e709e105fdaad3b1bea"
+  },
+  "name": "Counselors",
+  "users": [
+    {
+      "$oid": "64f98fba9e105fdaad3b1c38"
+    }
+  ],
+  "__v": 1
+}]

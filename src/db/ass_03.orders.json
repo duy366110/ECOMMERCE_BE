@@ -1,0 +1,130 @@
+[{
+  "_id": {
+    "$oid": "65008e59778bff49b76ed01c"
+  },
+  "user": {
+    "$oid": "65007c09669a2ebd94b6c9d6"
+  },
+  "fullName": "Nguyen Hoang Chien",
+  "email": "hoangchien@gmail.com",
+  "phone": "035 243 8729",
+  "address": "29 Tan Lap/ Tan Thanh/ Bu Dop/ Binh Phuoc",
+  "coupon": "",
+  "order": [
+    {
+      "product": {
+        "$oid": "64fbe0cf95e899c75234bb88"
+      },
+      "quantity": 1,
+      "_id": {
+        "$oid": "65008e54778bff49b76ed011"
+      }
+    }
+  ],
+  "date": {
+    "$date": "2023-09-12T16:14:17.484Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "650534b0c764974f28ba72d4"
+  },
+  "user": {
+    "$oid": "64f98df89e105fdaad3b1bdd"
+  },
+  "fullName": "Nguyen Phuong Duy",
+  "email": "duynguyen@gmail.com",
+  "phone": "035 243 8729",
+  "address": "29 Tan lap/ Tan Thanh/ Bu Dop/ Binh Phuoc",
+  "coupon": "",
+  "order": [
+    {
+      "product": {
+        "$oid": "64fbe0cf95e899c75234bb88"
+      },
+      "quantity": 1,
+      "_id": {
+        "$oid": "65053430c764974f28ba72c0"
+      }
+    }
+  ],
+  "date": {
+    "$date": "2023-09-16T04:53:04.831Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65053522c764974f28ba7316"
+  },
+  "user": {
+    "$oid": "65012f6e196142537859dda1"
+  },
+  "fullName": "Nguyen Phuong Duy",
+  "email": "duy366110@gmail.com",
+  "phone": "035 243 8729",
+  "address": "29 Tan Lap/ Tan Thanh/ Bu Dop/ Binh Phuoc",
+  "coupon": "123456789",
+  "order": [
+    {
+      "product": {
+        "$oid": "64fbe0cf95e899c75234bb88"
+      },
+      "quantity": 1,
+      "_id": {
+        "$oid": "65053511c764974f28ba72f5"
+      }
+    },
+    {
+      "product": {
+        "$oid": "64fbe73cb2a4c102e6657616"
+      },
+      "quantity": 1,
+      "_id": {
+        "$oid": "65053519c764974f28ba7309"
+      }
+    }
+  ],
+  "date": {
+    "$date": "2023-09-16T04:54:58.812Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "650539c2c764974f28ba7376"
+  },
+  "user": {
+    "$oid": "65012f6e196142537859dda1"
+  },
+  "fullName": "Nguyen Phuong Duy",
+  "email": "duy366110@gmail.com",
+  "phone": "035 243 8729",
+  "address": "29 Tan Lap/ Tan Thanh/ Bu Dop/ Binh Phuoc",
+  "coupon": "123456789",
+  "order": [
+    {
+      "product": {
+        "$oid": "64fbe73cb2a4c102e6657616"
+      },
+      "quantity": 1,
+      "_id": {
+        "$oid": "650539b1c764974f28ba7355"
+      }
+    },
+    {
+      "product": {
+        "$oid": "64fbe694b2a4c102e665760b"
+      },
+      "quantity": 1,
+      "_id": {
+        "$oid": "650539bdc764974f28ba7369"
+      }
+    }
+  ],
+  "date": {
+    "$date": "2023-09-16T05:14:42.739Z"
+  },
+  "__v": 0
+}]

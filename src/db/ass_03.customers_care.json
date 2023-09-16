@@ -1,0 +1,131 @@
+[{
+  "_id": {
+    "$oid": "65030fa2d7d620d7e15099ed"
+  },
+  "user": {
+    "$oid": "64f98df89e105fdaad3b1bdd"
+  },
+  "email": "duynguyen@gmail.com",
+  "socket_id": "",
+  "status": false,
+  "current_care": "",
+  "message": [],
+  "__v": 0,
+  "status_new_message": false
+},
+{
+  "_id": {
+    "$oid": "650407f5f8550db1656643f0"
+  },
+  "user": {
+    "$oid": "64f98fba9e105fdaad3b1c38"
+  },
+  "email": "khanhpham@gmail.com",
+  "socket_id": "",
+  "status": false,
+  "status_new_message": false,
+  "current_care": "",
+  "message": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65053a76c764974f28ba7387"
+  },
+  "user": {
+    "$oid": "65012f6e196142537859dda1"
+  },
+  "email": "duy366110@gmail.com",
+  "socket_id": "",
+  "status": false,
+  "status_new_message": false,
+  "current_care": "",
+  "message": [
+    {
+      "content": "hello admin bro",
+      "type": "Client",
+      "_id": {
+        "$oid": "65053f1a2182b1798f9a8987"
+      },
+      "createDate": {
+        "$date": "2023-09-16T05:37:30.327Z"
+      }
+    },
+    {
+      "content": "Hello client bro",
+      "type": "Counselors",
+      "care": {
+        "$oid": "64f98df89e105fdaad3b1bdd"
+      },
+      "_id": {
+        "$oid": "65053f282182b1798f9a8994"
+      },
+      "createDate": {
+        "$date": "2023-09-16T05:37:44.095Z"
+      }
+    }
+  ],
+  "__v": 2
+},
+{
+  "_id": {
+    "$oid": "65053aa1c764974f28ba73a1"
+  },
+  "user": {
+    "$oid": "64f991fbbc5ce90614d4ffca"
+  },
+  "email": "hoangkhai@gmail.com",
+  "socket_id": "",
+  "status": false,
+  "status_new_message": false,
+  "current_care": "",
+  "message": [
+    {
+      "content": "Hello admin I want buy product phone",
+      "type": "Client",
+      "_id": {
+        "$oid": "65053ab8c764974f28ba73a9"
+      },
+      "createDate": {
+        "$date": "2023-09-16T05:18:48.066Z"
+      }
+    },
+    {
+      "content": "Hello client what do you want???",
+      "type": "Counselors",
+      "care": {
+        "$oid": "64f98df89e105fdaad3b1bdd"
+      },
+      "_id": {
+        "$oid": "65053acdc764974f28ba73b6"
+      },
+      "createDate": {
+        "$date": "2023-09-16T05:19:09.851Z"
+      }
+    },
+    {
+      "content": "What do you buy product iphone",
+      "type": "Counselors",
+      "care": {
+        "$oid": "64f98df89e105fdaad3b1bdd"
+      },
+      "_id": {
+        "$oid": "65053b99c764974f28ba73be"
+      },
+      "createDate": {
+        "$date": "2023-09-16T05:22:33.284Z"
+      }
+    },
+    {
+      "content": "I want buy iphone 11",
+      "type": "Client",
+      "_id": {
+        "$oid": "65053bc2c764974f28ba73c6"
+      },
+      "createDate": {
+        "$date": "2023-09-16T05:23:14.878Z"
+      }
+    }
+  ],
+  "__v": 4
+}]

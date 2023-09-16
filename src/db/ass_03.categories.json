@@ -1,0 +1,68 @@
+[{
+  "_id": {
+    "$oid": "64d9a2969400252223996c5f"
+  },
+  "title": "Iphone",
+  "desc": "",
+  "images": [],
+  "collections": [
+    {
+      "$oid": "64fbe0cf95e899c75234bb88"
+    },
+    {
+      "$oid": "64fbe26bb2a4c102e66575e5"
+    },
+    {
+      "$oid": "64fbe356b2a4c102e66575f1"
+    }
+  ],
+  "__v": 10
+},
+{
+  "_id": {
+    "$oid": "64d9a2ba9400252223996c64"
+  },
+  "title": "Ipad",
+  "desc": "",
+  "images": [],
+  "collections": [
+    {
+      "$oid": "64fbe43ab2a4c102e66575f9"
+    },
+    {
+      "$oid": "64fbe50fb2a4c102e6657602"
+    }
+  ],
+  "__v": 7
+},
+{
+  "_id": {
+    "$oid": "64d9a2e29400252223996c6f"
+  },
+  "title": "Watch",
+  "desc": "",
+  "images": [],
+  "collections": [
+    {
+      "$oid": "64fbe694b2a4c102e665760b"
+    },
+    {
+      "$oid": "64fbe73cb2a4c102e6657616"
+    }
+  ],
+  "__v": 2
+},
+{
+  "_id": {
+    "$oid": "64d9a3059400252223996c74"
+  },
+  "title": "Airpod",
+  "desc": "",
+  "images": [],
+  "collections": [
+    {
+      "$oid": "64fbe7f8b2a4c102e665761e"
+    }
+  ],
+  "__v": 3
+}]

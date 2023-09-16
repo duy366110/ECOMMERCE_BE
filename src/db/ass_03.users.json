@@ -1,0 +1,141 @@
+[{
+  "_id": {
+    "$oid": "64f98df89e105fdaad3b1bdd"
+  },
+  "username": "Phuong Duy",
+  "fullname": "Nguyen Phuong Duy",
+  "email": "duynguyen@gmail.com",
+  "password": "$2a$12$L2Ytq2Svamda269hwu2fQeQwZRXpiZKCmgBiPATOJaPricZVfp4GC",
+  "phonenumber": "035 243 8729",
+  "role": {
+    "$oid": "64d5ed5451bf582d55c40d88"
+  },
+  "cart": [],
+  "__v": 3,
+  "createDate": {
+    "$date": "2023-09-01T16:14:17.484Z"
+  },
+  "address": "29 Tan lap/ Tan Thanh/ Bu Dop/ Binh Phuoc",
+  "order": [
+    {
+      "$oid": "650534b0c764974f28ba72d4"
+    }
+  ],
+  "updateDate": {
+    "$date": "2023-09-13T04:46:56.211Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "64f98fba9e105fdaad3b1c38"
+  },
+  "username": "Khanh Pham",
+  "fullname": "Tran Khanh Pham",
+  "email": "khanhpham@gmail.com",
+  "password": "$2a$12$oGvyGDqbWP.1K/ExpipLi.10t8iIVYvdjWeP3KfUjzXMX.Q2yXfVK",
+  "phonenumber": "035 243 8729",
+  "role": {
+    "$oid": "64f98e709e105fdaad3b1bea"
+  },
+  "cart": [],
+  "__v": 51,
+  "address": "",
+  "order": [],
+  "createDate": {
+    "$date": "2023-09-02T16:14:17.484Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "64f991fbbc5ce90614d4ffca"
+  },
+  "username": "Hoang Khai",
+  "fullname": "Nguyen Hoang Khai",
+  "email": "hoangkhai@gmail.com",
+  "password": "$2a$12$B.9038KXJTpFgxdf4q5ZOeMGyC1jqnlJrN4vIZQUG.YuakaEjCrxq",
+  "phonenumber": "035 243 8729",
+  "role": {
+    "$oid": "64d5ed5a51bf582d55c40d8b"
+  },
+  "cart": [],
+  "__v": 10,
+  "address": "",
+  "order": [],
+  "createDate": {
+    "$date": "2023-09-03T16:14:17.484Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "64ff316202ac4aa7310ae094"
+  },
+  "username": "",
+  "fullname": "Tran Thanh Phong",
+  "email": "thanhphong@gmail.com",
+  "password": "$2a$12$SyKOzWT7Qo1NnJvlKWe1QePskcqIA7ywwvbItvyBtFZSEbo74KEtO",
+  "phonenumber": "035 243 8729",
+  "address": "29 Tan Lap/ Tan Thanh/ Bu Dop/ Binh Phuoc",
+  "role": {
+    "$oid": "64d5ed5a51bf582d55c40d8b"
+  },
+  "order": [],
+  "cart": [],
+  "__v": 2,
+  "createDate": {
+    "$date": "2023-09-04T16:14:17.484Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "65007c09669a2ebd94b6c9d6"
+  },
+  "username": "",
+  "fullname": "Nguyen Hoang Chien",
+  "email": "hoangchien@gmail.com",
+  "password": "$2a$12$6WnIGnvACr8rMyYQEgZ6w.wVAU8R5CA/24jveyBOKQC6J/bk6VWlS",
+  "phonenumber": "035 243 8729",
+  "address": "29 Tan Lap/ Tan Thanh/ Bu Dop/ Binh Phuoc",
+  "role": {
+    "$oid": "64d5ed5a51bf582d55c40d8b"
+  },
+  "order": [
+    {
+      "$oid": "65008e59778bff49b76ed01c"
+    }
+  ],
+  "cart": [],
+  "__v": 8,
+  "createDate": {
+    "$date": "2023-09-08T16:14:17.484Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "65012f6e196142537859dda1"
+  },
+  "username": "",
+  "fullname": "Nguyen Phuong Duy",
+  "email": "duy366110@gmail.com",
+  "password": "$2a$12$TT7k1trSeYabRuVcy5/J0u4vznFg7Yn09s4pzDcYtTpY8VvOYy6MK",
+  "phonenumber": "035 243 8729",
+  "address": "29 Tan Lap/ Tan Thanh/ Bu Dop/ Binh Phuoc",
+  "role": {
+    "$oid": "64d5ed5a51bf582d55c40d8b"
+  },
+  "order": [
+    {
+      "$oid": "65053522c764974f28ba7316"
+    },
+    {
+      "$oid": "650539c2c764974f28ba7376"
+    }
+  ],
+  "cart": [],
+  "__v": 11,
+  "createDate": {
+    "$date": "2023-09-13T16:14:17.484Z"
+  },
+  "updateDate": {
+    "$date": "2023-09-16T04:54:41.231Z"
+  }
+}]
