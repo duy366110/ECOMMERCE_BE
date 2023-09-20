@@ -15,7 +15,7 @@ class UtilMailer {
                 <tr>
                     <td>${orderItem.product.name}</td>
                     <td>
-                        <img src="https://bookingbe-dae465dde231.herokuapp.com/${orderItem.product.images[0]}" alt="Product image"/>
+                        <img src="https://ecommercebe-5bbc136621ec.herokuapp.com/${orderItem.product.images[0]}" alt="Product image"/>
                     </td>
                     <td>${Number(orderItem.product.price).toFixed(6).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')} VND</td>
                     <td>${orderItem.quantity}</td>
