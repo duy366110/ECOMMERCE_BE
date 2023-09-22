@@ -2,9 +2,8 @@
 const router = require('express').Router();
 const { body } = require('express-validator');
 const ModelUser = require("../../model/model.user");
+const ConfigEnv = require("../../configs/config.env");
 const ControllerAuth = require("../../controller/common/controller-auth");
-
-const { PERMISSION } = require("../../configs/config.contants");
 
 // NGƯỜI DÙNG ĐĂNG NHẬP QUẢN TRỊ HỆ THỐNG
 router.post('/signin/admin', [
@@ -12,7 +11,7 @@ router.post('/signin/admin', [
         if(!val.trim()) throw Error('E-mail not empty');
         
         let userInfor = await ModelUser.findOne({email: {$eq: val}}).populate('role');
-        if(!PERMISSION.some((role) => role === userInfor.role.name)) {
+        if(!ConfigEnv.PERMISSION.some((role) => role === userInfor.role.name)) {
             throw Error('Account not permissing');
         }
 
