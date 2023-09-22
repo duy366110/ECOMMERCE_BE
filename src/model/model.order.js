@@ -27,7 +27,11 @@ const ModelOrder = new Schema({
         type: String,
         default: ''
     },
-    date: {
+    createDate: {
+        type: Date,
+        default: Date.now
+    },
+    updateDate: {
         type: Date,
         default: Date.now
     },

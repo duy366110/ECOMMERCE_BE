@@ -39,8 +39,15 @@ const ModelProduct = new Schema({
     category: {
         type: Schema.Types.ObjectId,
         ref: 'categories'
+    },
+    createDate: {
+        type: Date,
+        default: Date.now
+    },
+    updateDate: {
+        type: Date,
+        default: Date.now
     }
-
 }, {
     collection: COLLECTION_NAME
 })

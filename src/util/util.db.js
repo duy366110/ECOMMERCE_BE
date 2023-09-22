@@ -1,19 +1,32 @@
+"use strict"
 const mongoose = require("mongoose");
+const ConfigEnv = require("../configs/config.env");
 
-class mongodb {
+class Mongodb {
 
-    constructor() { }
+    constructor() {
+        this.connect();
+    }
 
-    connect = (callback) => {
-        mongoose.connect('mongodb+srv://duy366110:jvLAaEtOIsc8EBuM@normal.29rxu4p.mongodb.net/ecommerce?retryWrites=true&w=majority') // mongodb://127.0.0.1:27017/ass_03
+    connect() {
+        mongoose.connect(ConfigEnv.DB_URL)
         .then(() => {
-            callback();
+            console.log("Connect database sucessully");
         })
         .catch((error) => {
             throw error;
 
         })
     }
+
+    static getInstance() {
+        if(!Mongodb.instance) {
+            Mongodb.instance = new Mongodb();
+        }
+        return Mongodb.instance;
+    }
 }
 
-module.exports = new mongodb();
+const Instance = Mongodb.getInstance();
+
+module.exports = Instance;
