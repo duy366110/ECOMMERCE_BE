@@ -2,6 +2,7 @@ const ModelUser = require("../../model/model.user");
 const { validationResult } = require('express-validator');
 const jwt = require("../../util/util.jwt");
 const bcrypt = require("../../util/util.bcrypt");
+const ServiceUser = require("../../services/service.user");
 
 class ControllerAuth {
 
@@ -10,7 +11,6 @@ class ControllerAuth {
     //  XÁC THỰC TÀI KHOẢN NGƯỜI DÙNG ĐĂNG NHẬP - QUẢN TRỊ
     signinManager = async (req, res, next) => {
         try {
-            let { email, password } = req.body;
             let { errors } = validationResult(req);
 
             if(errors.length) {
@@ -18,37 +18,45 @@ class ControllerAuth {
 
             } else {
 
-                let userInfor = await ModelUser.findOne({email: {$eq: email}}).populate('role').exec();
-                bcrypt.compare(password, userInfor.password, (infor) => {
-                    if(infor.status) {
-                        jwt.sign({email: userInfor.email}, (infor) => {
+                let { email, password } = req.body;
+                await ServiceUser.findByEmail(email, (information) => {
+                    let { status, message, user } = information;
+
+                    if(status) {
+                        bcrypt.compare(password, user.password, (infor) => {
                             if(infor.status) {
-                                res.status(200).json({
-                                    status: true,
-                                    message: 'Signin successfully',
-                                    infor: {
-                                        id: userInfor._id,
-                                        token: infor.token,
-                                        username: userInfor.username,
-                                        fullname: userInfor.fullname,
-                                        phone: userInfor.phonenumber,
-                                        addres: userInfor.address,
-                                        role: userInfor.role.name,
+                                jwt.sign({email: user.email}, (infor) => {
+                                    if(infor.status) {
+                                        res.status(200).json({
+                                            status: true,
+                                            message: 'Sign In successfully',
+                                            infor: {
+                                                id: user._id,
+                                                token: infor.token,
+                                                username: user.username,
+                                                fullname: user.fullname,
+                                                phone: user.phonenumber,
+                                                addres: user.address,
+                                                role: user.role.name,
+                                            }
+                                        })
+    
+                                    } else {
+    
                                     }
                                 })
-
+    
                             } else {
-
+                                res.status(406).json({status: false,  message: 'Password incorrect'});
                             }
                         })
 
                     } else {
-                        res.status(406).json({status: false,  message: 'Password incorrect'});
+                        res.status(406).json({status: false,  message: 'Signin token failed'});
                     }
-
                 })
             }
-
+            
         } catch (error) {
             res.status(500).json({status: false, message: 'Internal server failed'});
         }
