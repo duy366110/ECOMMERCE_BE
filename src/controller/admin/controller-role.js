@@ -8,7 +8,7 @@ class ControllerRole {
     constructor() { }
 
     // ADMIN LẤY TẤT CẢ CÁC ROLE HIỆN CÓ
-    getRoles = async (req, res, next) => {
+    async getRoles(req, res, next) {
         try {
             let { limit, start} = req.params;
             await ServiceRole.getLimit(limit, start, (information) => {
@@ -29,7 +29,7 @@ class ControllerRole {
     }
 
     // TRUY XUẤT DANH MỤC ROLE
-    getRolesAll = async (req, res, next) => {
+    async getRolesAll(req, res, next) {
         try {
             await ServiceRole.getAll((information) => {
                 let { status, message, roles } = information;
@@ -48,7 +48,7 @@ class ControllerRole {
     }
 
     // TRUY XUẤT ROLE THEO ID
-    getRoleById = async (req, res, next) => {
+    async getRoleById(req, res, next) {
         try {
             let { role } = req.params;
             await ServiceRole.getById(role, (information) => {
@@ -69,7 +69,7 @@ class ControllerRole {
     }
 
     // TRUY XUẤT SỐ LƯỢNG ROLE HIỆN CÓ
-    getAmount = async (req, res, next) => {
+    async getAmount(req, res, next) {
         try {
             await ServiceRole.getAmount((information) => {
                 let { status , message, amount} = information;
@@ -88,7 +88,7 @@ class ControllerRole {
     }
 
     // CREATE ROLE
-    createRole = async (req, res, next) => {
+    async createRole(req, res, next) {
         const { errors } = validationResult(req);
 
         // XÁC THỰC LỖI THÔNG BÁO VỀ ADMIN
@@ -117,7 +117,7 @@ class ControllerRole {
     }
 
     // UPDATE ROLE
-    modifiRole = async (req, res, next) => {
+    async modifiRole(req, res, next) {
         let { errors } = validationResult(req);
 
         try {
@@ -148,7 +148,7 @@ class ControllerRole {
     }
 
     // DELETE ROLE
-    deleteRole = async (req, res, next) => {
+    async deleteRole(req, res, next) {
         let { errors } = validationResult(req);
 
         if(errors.length) {

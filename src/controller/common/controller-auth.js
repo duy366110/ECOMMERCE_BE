@@ -8,8 +8,8 @@ class ControllerAuth {
 
     constructor() { }
 
-    //  XÁC THỰC TÀI KHOẢN NGƯỜI DÙNG ĐĂNG NHẬP - QUẢN TRỊ
-    signinManager = async (req, res, next) => {
+    //  XAC STHCỰ TÀI KHOẢN QUẢN TRỊ
+    async signinManager(req, res, next) {
         try {
             let { errors } = validationResult(req);
 
@@ -62,8 +62,8 @@ class ControllerAuth {
         }
     }
 
-    // XÁC THỰC TÀI KHOẢN TỪ PHÍA CLIENT
-    signinClient = async (req, res, next) => {
+    // XÁC THỰC TÀI KHOẢN CLIENT
+    async signinClient(req, res, next) {
         try {
             let { email, password } = req.body;
             let { errors } = validationResult(req);
@@ -72,42 +72,44 @@ class ControllerAuth {
                 res.status(406).json({status: false, message: errors[0].msg});
 
             } else {
-                let userInfor = await ModelUser.findOne({email: {$eq: email}}).populate('role');
-                if(userInfor) {
-                    bcrypt.compare(password, userInfor.password, (infor) => {
-                        if(infor.status) {
-                            jwt.sign({email: userInfor.email}, (infor) => {
-                                if(infor.status) {
-                                    res.status(200).json({
-                                        status: true,
-                                        message: 'Signin successfully',
-                                        infor: {
-                                            id: userInfor._id,
-                                            token: infor.token,
-                                            username: userInfor.username,
-                                            fullname: userInfor.fullname,
-                                            email: userInfor.email,
-                                            phone: userInfor.phonenumber,
-                                            address: userInfor.address,
-                                            role: userInfor.role.name,
-                                        }
-                                    })
-    
-                                } else {
-    
-                                }
-                            })
-    
-                        } else {
-                            res.status(406).json({status: false,  message: 'Password incorrect'});
-                        }
-    
-                    })
 
+                await ServiceUser.findByEmail(email, (information) => {
+                    let { status, message, user } = information;
+                    if(status) {
 
-                } else {
-                    res.status(404).json({status: false, message: 'Not found user account'});
-                }
+                        bcrypt.compare(password, user.password, (infor) => {
+                            if(infor.status) {
+                                jwt.sign({email: user.email}, (infor) => {
+                                    if(infor.status) {
+                                        res.status(200).json({
+                                            status: true,
+                                            message: 'Signin successfully',
+                                            infor: {
+                                                id: user._id,
+                                                token: infor.token,
+                                                username: user.username,
+                                                fullname: user.fullname,
+                                                email: user.email,
+                                                phone: user.phonenumber,
+                                                address: user.address,
+                                                role: user.role.name,
+                                            }
+                                        })
+        
+                                    } else {
+        
+                                    }
+                                })
+        
+                            } else {
+                                res.status(406).json({status: false,  message: 'Password incorrect'});
+                            }
+                        })
+
+                    } else {
+                        res.status(404).json({status: false, message: 'Not found user account'});
+                    }
+                })
 
             }
             

@@ -8,7 +8,7 @@ class ControllerAdminCustomerCare {
     constructor() { }
 
     // QUẢN TRỊ VIÊN KẾT NỐI TRANG QUẢN TRỊ CHAT
-    adminConnect = async function(io, socket) {
+    async adminConnect(io, socket) {
         socket.on('admin-connect', (data) => {
             let { token } = data;
 
@@ -39,7 +39,7 @@ class ControllerAdminCustomerCare {
     }
 
     // QUẢN TRỊ VIÊN CHỌN USER HỖ TRỢ
-    adminChooseUserSupport = async function(io, socket) {
+    async adminChooseUserSupport(io, socket) {
         socket.on('admin-choose-user-support', (data) => {
             let { customer_care, token } = data;
 
@@ -66,7 +66,7 @@ class ControllerAdminCustomerCare {
     }
 
     // QUẢN TRỊ VIÊN THỰC HIÊN GỬI MESSAGE VỀ CLIENT
-    adminSendMessageToClient = async function(io, socket) {
+    async adminSendMessageToClient(io, socket) {
         socket.on('admin-send-message-to-client', async (data) => {
             let {user, customer, message } = data;
 
@@ -90,7 +90,7 @@ class ControllerAdminCustomerCare {
     }
 
     //  QUẢN TRỊ VIÊN NGẮT KẾT NỐI
-    adminDisconnect = async function(io, socket) {
+    async adminDisconnect(io, socket) {
         socket.on('admin-disconnect', (data) => {
             let { token } = data;
 
