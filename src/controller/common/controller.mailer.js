@@ -7,7 +7,7 @@ class ControllerMainler {
     constructor() { }
 
     // GỬI THÔNG TIN ĐẾN KHÁCH HÀNG SAU KHI ỎDẺ SẢN PHẨM
-    sendMailToClientAfterOrder = async function(req, res, next) {
+    async sendMailToClientAfterOrder(req, res, next) {
         try {
 
             let { order } = req;
@@ -29,7 +29,7 @@ class ControllerMainler {
     }
 
     // THÔNG BÁO ĐẾN KHÁCH HÀNG SEND MAIL THÀNH CÔNG
-    notificationAfterSendMailOrder = async function(req, res, next) {
+    async notificationAfterSendMailOrder(req, res, next) {
         let { statusMailer } = req;
         if(statusMailer) {
             res.status(200).json({status: true, message: 'Send information user order successfully'});

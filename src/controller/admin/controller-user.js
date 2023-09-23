@@ -50,7 +50,7 @@ class ControllerUser {
     }
 
     // TRUY XUẤT USER THEO ID
-    getUserById = async (req, res, next) => {
+    async getUserById (req, res, next) {
         try {
             let { user } = req.params;
             await ServiceUser.getById(user, (information) => {
@@ -91,7 +91,7 @@ class ControllerUser {
     }
 
     // CREATE USER
-    createUser = async (req, res, next) => {
+    async createUser(req, res, next) {
         const { errors } = validationResult(req);
 
         try {
@@ -121,7 +121,7 @@ class ControllerUser {
     }
 
     // UPDATE USER
-    modifiUser = async (req, res, next) => {
+    async modifiUser(req, res, next) {
         let { errors } = validationResult(req);
 
         if(errors.length) {
@@ -153,7 +153,7 @@ class ControllerUser {
     }
 
     // DELETE USER
-    deleteUser = async (req, res, next) => {
+    async deleteUser(req, res, next) {
         let { errors } = validationResult(req);                                                                                               
 
         if(errors.length) {

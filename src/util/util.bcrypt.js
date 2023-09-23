@@ -7,11 +7,11 @@ class Bcrypt  {
     constructor() {}
 
 
-    has = (password) => {
+    has(password) {
         return bcrypt.hashSync(password, this.salt);
     }
 
-    compare = (password, hash, callback) => {
+    compare(password, hash, callback) {
         bcrypt.compare(password, hash, (error, data) => {
             if(data) {
                 callback({status: true, hash: data});
