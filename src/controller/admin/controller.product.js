@@ -1,6 +1,4 @@
 "use strict"
-const fs = require('fs');
-const path = require('path');
 const { validationResult } = require('express-validator');
 const ModelProduct = require("../../model/model.product");
 const ServiceProduct = require("../../services/service.product");

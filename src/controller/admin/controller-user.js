@@ -2,8 +2,6 @@ const mongodb = require('mongodb');
 const { validationResult } = require('express-validator');
 const ModelRole = require('../../model/model.role');
 const ModelUser = require("../../model/model.user");
-const Bcrypt = require("../../util/util.bcrypt");
-const ObjectId = mongodb.ObjectId;
 
 const ServiceUser = require("../../services/service.user");
 

@@ -3,10 +3,10 @@ const router = require("express").Router();
 const ControllerOrder = require("../../controller/admin/controller.order");
 
 
-// ROUTER LẤY VỀ SỐ LƯỢNG ORDER.
-router.get("/amount", ControllerOrder.getAmoutnOrder);
+// TRUY XUẤT SỐ LƯỢNG ORDER
+router.get("/amount", ControllerOrder.getAmount);
 
-// ROUTER TRẢ VỀ ORDER VỚI SỐ LƯỢNG ĐƯỢC CHỈ ĐỊNH
-router.get("/:limit/:start", ControllerOrder.getLimitOrders);
+// TRUY XUẤT DANH MỤC ORDER
+router.get("/:limit/:start", ControllerOrder.getOrders);
 
 module.exports = router;

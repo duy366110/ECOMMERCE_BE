@@ -3,7 +3,7 @@ const ModelProduct = require("../model/model.product");
 const ConfigEnv = require("../configs/config.env");
 const UtilCloudinary = require("../util/util.cloudinary");
 
-class ServiceRole {
+class ServiceProduct {
 
     constructor() { }
 
@@ -182,7 +182,7 @@ class ServiceRole {
     }
 }
 
-module.exports = new ServiceRole();
+module.exports = new ServiceProduct();
 
 
   
