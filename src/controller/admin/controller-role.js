@@ -1,72 +1,97 @@
 const mongodb = require('mongodb');
-const ModelRole = require("../../model/model-role");
+const ModelRole = require("../../model/model.role");
 const { validationResult } = require('express-validator');
 const ObjectId = mongodb.ObjectId;
+const ServiceRole = require("../../services/service.role");
 
 class ControllerRole {
 
     constructor() { }
 
-    // ADMIN LẤY SỐ LƯỢNG ROLE HIỆN CÓ TRONG DB
-    getRoleAmount = async (req, res, next) => {
-        try {
-            let roleAmount = await ModelRole.find({}).count().exec();
-            res.status(200).json({status: true, message: 'get role successfull', amount: roleAmount});
-
-        } catch (error) {
-            res.status(500).json({status: false, message: 'Internal server failed'});
-        }
-    }
-
     // ADMIN LẤY TẤT CẢ CÁC ROLE HIỆN CÓ
     getRoles = async (req, res, next) => {
         try {
             let { limit, start} = req.params;
-            let rolesInfor = await ModelRole.find({}).limit(limit).skip(start).exec();
-            res.status(200).json({status: true, roles: rolesInfor, message: 'Find roles successfully'});
+            await ServiceRole.getLimit(limit, start, (information) => {
+                let { status , message, roles} = information;
+
+                if(status) {
+                    res.status(200).json({status, message, roles});
+
+                } else {
+                    res.status(406).json({status, message, error});
+                }
+            })
+
 
         } catch (error) {
+            // PHƯƠNG THỨC LỖI
             res.status(500).json({status: false, message: 'Internal server failed'});
 
         }
     }
 
-    // ADMIN LẤY TẤT CẢ CÁC ROLE HIỆN CÓ
-    findRoles = async (req, res, next) => {
+    // TRUY XUẤT DANH MỤC ROLE
+    getRolesAll = async (req, res, next) => {
         try {
-            let rolesInfor = await ModelRole.find({});
-            res.status(200).json({status: true, roles: rolesInfor, message: 'Find roles successfully'});
+            await ServiceRole.getAll((information) => {
+                let { status, message, roles } = information;
+                if(status) {
+                    res.status(200).json({status, message, roles});
+
+                } else {
+                    res.status(406).json({status, message, error});
+                }
+            })
 
         } catch (error) {
+            // PHƯƠNG THỨC LỖI
             res.status(500).json({status: false, message: 'Internal server failed'});
-
         }
     }
 
-    // ADMIN LẤY ROLE THEO ID
-    findRoleById = async (req, res, next) => {
+    // TRUY XUẤT ROLE THEO ID
+    getRoleById = async (req, res, next) => {
         try {
             let { role } = req.params;
+            await ServiceRole.getById(role, (information) => {
+                let { status, message, role, error } = information;
+                if(status) {
+                    res.status(200).json({status, message, role});
 
-            if(role) {
-                let roleInfor = await ModelRole.findById(role);
-                res.status(200).json({status: true, role: roleInfor, message: 'Find role successfully'});
-
-            } else {
-                res.status(404).json({status: false, message: 'Missing role ID'});
-
-            }
+                } else {
+                    res.status(406).json({status, message, error});
+                }
+            })
 
         } catch (error) {
+            // PHƯƠNG THỨC LỖI
             res.status(500).json({status: false, message: 'Internal server failed'});
 
         }
     }
 
+    // TRUY XUẤT SỐ LƯỢNG ROLE HIỆN CÓ
+    getAmount = async (req, res, next) => {
+        try {
+            await ServiceRole.getAmount((information) => {
+                let { status , message, amount} = information;
 
-    // ADMIN TẠO ROLE MỚI
+                if(status) {
+                    res.status(200).json({status, message, amount});
+
+                } else {
+                    res.status(406).json({status, message, error});
+                }
+            })
+        } catch (error) {
+            // PHƯƠNG THỨC LỖI
+            res.status(500).json({status: false, message: 'Internal server failed'});
+        }
+    }
+
+    // CREATE ROLE
     createRole = async (req, res, next) => {
-        const { role } = req.body;
         const { errors } = validationResult(req);
 
         // XÁC THỰC LỖI THÔNG BÁO VỀ ADMIN
@@ -75,17 +100,17 @@ class ControllerRole {
 
         } else {
             try {
+                const { role } = req.body;
+                await ServiceRole.create({name: role}, (information) => {
+                    let { status, message, error} = information;
 
-                // THÔNG TIN HỢP LỆ TẠO ROLE MỚI
-                let roleInfor = await ModelRole.create({name: role});
-                if(roleInfor) {
-                    res.status(200).json({status: true, message: 'Create role successfully'});
+                    if(status) {
+                        res.status(200).json({status, message});
 
-                } else {
-                    // TẠO ROLE KHÔNG THÀNH CÔNG
-                    res.status(406).json({status: false, message: 'Create role failed'});
-
-                }
+                    } else {
+                        res.status(406).json({status, message, error});
+                    }
+                })
 
             } catch (err) {
                 // PHƯƠNG THỨC LỖI
@@ -95,9 +120,8 @@ class ControllerRole {
         }
     }
 
-    // ADMIN SỬA THÔNG TIN ROLE
+    // UPDATE ROLE
     modifiRole = async (req, res, next) => {
-        let { role, name } = req.body;
         let { errors } = validationResult(req);
 
         try {
@@ -106,21 +130,18 @@ class ControllerRole {
                 res.status(400).json({staus: false, message: errors[0].msg});
 
             } else {
+                let { role, name } = req.body;
                 let roleInfor = await ModelRole.findById(role);
 
-                // NẾU ROLE CÓ LIÊN KẾT VỚI USER KHÔNG THỰC HIỆN CHỨC NĂNG
-                if(!roleInfor.users.length) {
-                    roleInfor.name = name;
-                    let result = await roleInfor.save();
-                    if(result) {
-                        res.status(200).json({status: true, message: 'Modifi role successfully'});
-                    }
+                await ServiceRole.update({model: roleInfor, name}, (information) => {
+                    let { status, message , error } = information;
+                    if(status) {
+                        res.status(200).json({status, message});
 
-                } else {
-                     // CẬP NHẬT NAME ROLE KHÔNG THÀNH CÔNG
-                    res.status(406).message({status: false, message: "Not modifi role reference to user account"});
-                }
-            
+                    } else {
+                        res.status(406).json({status, message, error});
+                    }
+                })
             }
 
         } catch (error) {
@@ -130,9 +151,8 @@ class ControllerRole {
         }
     }
 
-    // ADMIN XOÁ ROLE
+    // DELETE ROLE
     deleteRole = async (req, res, next) => {
-        let { role } = req.body;
         let { errors } = validationResult(req);
 
         if(errors.length) {
@@ -140,19 +160,18 @@ class ControllerRole {
 
         } else {
             try {
-                // TIẾN HÀNH XOÁ ROLE
-                let status = await ModelRole.deleteOne({_id: {$eq: new ObjectId(role)}});
-                let { acknowledged, deletedCount } = status;
+                let { role } = req.body;
+                let roleInfor = await ModelRole.findById(role);
 
-                if(deletedCount) {
-                    // XOÁ ROLE THÀNH CÔNG
-                    res.status(200).json({status: true, message: 'Delete role successfully'});
+                await ServiceRole.delete({model: roleInfor}, (information) => {
+                    let { status, message, error } = information;
+                    if(status) {
+                        res.status(200).json({status, message});
 
-                } else {
-                    // XOÁ ROLE KHÔNG THÀNH CÔNG
-                    res.status(502).json({status: false, message: 'Delete role failed'});
-                    
-                }
+                    } else {
+                        res.status(406).json({status, message, error});
+                    }
+                })
 
             } catch (error) {
                 // PHƯƠNG THỨC LỖI

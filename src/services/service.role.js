@@ -1,5 +1,5 @@
 "use strict"
-const ModelRole = require("../model/model-role");
+const ModelRole = require("../model/model.role");
 
 class ServiceRole {
 
