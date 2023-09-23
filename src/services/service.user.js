@@ -76,12 +76,14 @@ class ServiceUser {
                 email: user.email,
                 password: UtilBcrypt.has(user.password),
                 phonenumber: user.phonenumber,
+                address: user.address,
                 role
             });
 
             if(userInfor) {
                 role.users.push(userInfor);
                 await role.save();
+
                 cb({status: true, message: 'Create user successfully'});
 
             } else {
@@ -143,6 +145,7 @@ class ServiceUser {
 
             if(role._id.toString() !== user.model.role._id.toString()) {
                 user.model.role.users = user.model.role.users.filter((userElm) => userElm.toString() !== user.model._id.toString());
+                user.model.role = role;
                 role.users.push(user.model);
 
                 await user.model.role.save();
@@ -152,7 +155,8 @@ class ServiceUser {
             user.model.username = user.username;
             user.model.fullname = user.fullname;
             user.model.email = user.email;
-            user.model.phonenumber = user.phonenumber
+            user.model.phonenumber = user.phonenumber;
+            user.model.address = user.address;
 
             await user.model.save();
             cb({status: true, message: 'Update user successfully'});
