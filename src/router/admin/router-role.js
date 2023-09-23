@@ -1,23 +1,23 @@
 const router = require('express').Router();
 const mongodb = require("mongodb");
 const { body }  = require('express-validator');
-const ModelRole = require("../../model/model-role");
+const ModelRole = require("../../model/model.role");
 const ControllerRole = require("../../controller/admin/controller-role");
 const ObjectId = mongodb.ObjectId;
 
-// ROUTER ADMIN LẤY THÔNG TIN ROLE HIỆN CÓ
-router.get("/amount", ControllerRole.getRoleAmount);
+// TRUY XUẤT SỐ LƯỢNG ROLE
+router.get("/amount", ControllerRole.getAmount);
 
-// ROUTER PAGINATION ADMIN LẤY THÔNG TIN TẤT CẢ CÁC ROLE
+// TRUY XUẤT ROLE SỐ LƯỢNG CHỈ ĐỊNH
 router.get('/:limit/:start', ControllerRole.getRoles);
 
-// ROUTER ADMIN TÌM ROLE THEO ID
-router.get("/:role", ControllerRole.findRoleById);
+// TRUY XUẤT ROLE THEO ID
+router.get("/:role", ControllerRole.getRoleById);
 
-// ROUTER ADMIN LẤY THÔNG TIN TẤT CẢ CÁC ROLE
-router.get('/', ControllerRole.findRoles);
+// TRUY XUẤT DANH SÁCH ROLE
+router.get('/', ControllerRole.getRolesAll);
 
-// ROUTER ADMIN TẠO ROLE
+// CREATE ROLE
 router.post('/', [
     body('role').custom( async(val, {req}) => {
 
@@ -37,7 +37,7 @@ router.post('/', [
 
 ], ControllerRole.createRole);
 
-// ROUTER ADMIN SỬA ROLE
+// UPDATE ROLE
 router.patch("/",[
     body('role').custom((val, { req}) => {
          // ROLE KHÔNG ĐƯỢC TRỐNG
@@ -65,7 +65,7 @@ router.patch("/",[
 
 ], ControllerRole.modifiRole);
 
-// ROUTER ADMIN XOA ROLE
+// DELÊT ROLE
 router.delete('/', [
     body('role').custom( async(val, {req}) => {
 
