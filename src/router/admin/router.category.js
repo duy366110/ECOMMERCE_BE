@@ -3,19 +3,19 @@ const { body } = require("express-validator");
 const ModelCategory = require("../../model/model.category");
 const ControllerCategory = require("../../controller/admin/controller.category");
 
-// ROUTER PAGINATION LẤY THÔNG TIN DANH SÁCH CATEGORY
+// TRUY XUẤT CATEGORY
 router.get("/:limit/:start", ControllerCategory.getCategories);
 
-// ROUTER LẤY SỐ LƯỢNG LOCATION HIỆN CÓ
+// TRUY XUẤT SỐ LƯỢNG CATEGORY
 router.get("/amount", ControllerCategory.getAmount);
 
-//ROUTER TÌN CATEGORY THEO ID
+// TRUY XUẤT CATEGORY THEO ID
 router.get("/:category", ControllerCategory.getCategoryById);
 
-// ROUTER ADMIN LẤY DANH SÁCH CATEGORY
+// TRUY XUẤT DANH MỤC CATEGORY
 router.get("/", ControllerCategory.getCategoriesAll);
 
-// ROUTER THÊM MỚI CATEGORY
+// CREATE CATEGORY
 router.post("/",[
     body('title').custom( async(val, {req}) => {
 
@@ -32,7 +32,7 @@ router.post("/",[
     }),
 ], ControllerCategory.createCategory);
 
-// ROUTER ADMIN THỰC HIỆN CẬP NHẬT CATEGORY
+// UPDATE CATEGORY
 router.patch("/", [
     body('category').notEmpty().withMessage('ID category not empty'),
     body('title').custom( async(val, {req}) => {
@@ -53,7 +53,7 @@ router.patch("/", [
 
 ], ControllerCategory.modifiCategory);
 
-// ROUTER XOÁ CATEGORY
+// DELETE CATEGORY
 router.delete("/", [
     body("category").custom( async(val, { req }) => {
         if(!val.trim()) throw Error('Category ID not empty');
@@ -68,7 +68,7 @@ router.delete("/", [
     })
 ], ControllerCategory.deleteCategory);
 
-// ROUTER XOÁ ẢNH CATEGORY
+// DELETE CATEGORY IMAGE
 router.delete('/photo', [
     body("id").notEmpty().withMessage("ID category not empty"),
     body("photo").notEmpty().withMessage("ID category not empty")

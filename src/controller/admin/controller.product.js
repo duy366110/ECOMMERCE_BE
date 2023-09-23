@@ -3,52 +3,93 @@ const fs = require('fs');
 const path = require('path');
 const { validationResult } = require('express-validator');
 const ModelProduct = require("../../model/model.product");
+const ServiceProduct = require("../../services/service.product");
 
 class ControllerProduct {
 
     constructor() { }
 
-    // LẤY VỀ SỐ LƯỢNG PRODUCT HIỆN CÓ
-    getAmoutnProduct = async(req, res, next) => {
+    // TRUY XUẤT DANH MỤC PRODUCT
+    async getProducts(req, res, next) {
         try {
-            let amountProduct = await ModelProduct.find({}).count().exec();
-            res.status(200).json({
-                status: true,
-                message: 'Get product amout',
-                amount: amountProduct
-            });
+            let { limit, start} = req.params;
+            await ServiceProduct.getLimit(limit, start, (information) => {
+                let { status , message, products} = information;
+
+                if(status) {
+                    res.status(200).json({status, message, products});
+
+                } else {
+                    res.status(406).json({status, message, error});
+                }
+            })
 
         } catch (error) {
+            // PHƯƠNG THỨC LỖI
             res.status(500).json({status: false, message: 'Internal server failed'});
         }
     }
 
-    // TRẢ VỀ THÔNG TIN PRODUCT VỚI SỐ LƯỢNG ĐƯỢC CHỈ ĐỊNH
-    getLimitProducts = async(req, res, next) => {
+    // TRUY XUẤT TẤT CẢ DANH MỤC PRODUCT
+    async getProductsAll (req, res, next) {
         try {
-            let { limit, start } = req.params;
-            let productsInfor = await ModelProduct.find({}).populate(['category']).limit(limit).skip(start).exec();
-            res.status(200).json({status: true, message: 'Find products successfully', products: productsInfor});
+            await ServiceProduct.getAll((information) => {
+                let { status, message, products } = information;
+                if(status) {
+                    res.status(200).json({status, message, products});
+
+                } else {
+                    res.status(406).json({status, message, error});
+                }
+            })
 
         } catch (error) {
+            // PHƯƠNG THỨC LỖI
             res.status(500).json({status: false, message: 'Internal server failed'});
         }
     }
 
-    // TIMG KIẾM PRODUCT THÔNG QUA ID
+    // TRUY XUẤT PRODUCT THEO ID
     getProductById = async (req, res, next) => {
         try {
             let { product } = req.params;
-            let productInfor = await ModelProduct.findById(product).populate(['category']).lean();
-            res.status(200).json({status: true, product: productInfor});
+            await ServiceProduct.getById(product, (information) => {
+                let { status, message, product, error } = information;
+                if(status) {
+                    res.status(200).json({status, message, product});
+
+                } else {
+                    res.status(406).json({status, message, error});
+                }
+            })
 
         } catch (error) {
+            // PHƯƠNG THỨC LỖI
             res.status(500).json({status: false, message: 'Internal server failed'});
 
         }
     }
 
-    // ADMIN TẠO MỚI TÀI KHOẢN
+    // TRUY XUẤT SỐ LƯỢNG PRODUCT HIỆN CÓ
+    getAmount = async (req, res, next) => {
+        try {
+            await ServiceProduct.getAmount((information) => {
+                let { status , message, amount} = information;
+
+                if(status) {
+                    res.status(200).json({status, message, amount});
+
+                } else {
+                    res.status(406).json({status, message, error});
+                }
+            })
+        } catch (error) {
+            // PHƯƠNG THỨC LỖI
+            res.status(500).json({status: false, message: 'Internal server failed'});
+        }
+    }
+
+    // CREATE PRODUCT
     createProduct = async function (req, res, next) {
         const { errors } = validationResult(req);
 
@@ -61,27 +102,24 @@ class ControllerProduct {
                 let { category } = req;
                 let { name, price, quantity, shortDes, longDes } = req.body;
 
-                // LẤY THÔNG TIN DANH SÁCH HÌNH ẢNH CATEGORY.
-                let paths = [];
+                // LẤY THÔNG TIN DANH SÁCH HÌNH ẢNH PRODUCT
+                let images = [];
                 if(files.length) {
-                    paths = files.map((image) => {
-                        return `images/${image.filename}`;
+                    images = files.map((image) => {
+                        return image.path? image.path : '';
                     })
                 }
 
-                // MÃ HOÁ MẬT KHẨU VÀ TẠO MỚI USER.
-                let productInfor = await ModelProduct.create({ name, price, images: paths, quantity, shortDes, longDes, category })
+                // TẠO MỚI THÔNG TIN PRODUCT
+                await ServiceProduct.create({ name, price, images, quantity, shortDes, longDes }, images, category, (information) => {
+                    let { status, message, error } = information;
+                    if(status) {
+                        res.status(200).json({status: true, message});
 
-                if(productInfor) {
-                    // THỰC HIỆN TẠO LIÊN KẾT GIỮA PRODUCT VÀ CATEGORY
-                    category.collections.push(productInfor);
-                    await category.save();
-                    res.status(200).json({status: true, message: 'Create product successfully'});
-
-                } else {
-                    res.status(406).json({status: false, message: 'Create product failed'});
-
-                }
+                    } else {
+                        res.status(406).json({status: false, message, error});
+                    }
+                })
             }
 
         } catch (error) {
@@ -90,7 +128,7 @@ class ControllerProduct {
         }
     }
 
-    // ADMIN SỬA THÔNG TIN TÀI KHOẢN
+    // UPDATE PRODUCT
     modifiProduct = async function(req, res, next) {
         let { errors } = validationResult(req);
 
@@ -105,35 +143,24 @@ class ControllerProduct {
 
                 let productInfor = await ModelProduct.findById(product).populate(['category']).exec();
 
-                // KIỂM TRA ADMIN CÓ CẬP NHẬT ROLE CỦA SẢN PHẨM HAY KHÔNG
-                if(productInfor.category._id.toString() !== category._id.toString()) {
-                    // XOÁ LIÊN KẾT GIỮA PRODUCT VÀ CATEGORY CŨ
-                    productInfor.category.collections = productInfor.category.collections.filter((pro) => pro.toString() !== productInfor._id.toString());
-                    await productInfor.category.save();
-
-                    // TẠO LIÊN KẾT GIỮA PRODUCT VÀ CATEGORY MỚI
-                    category.collections.push(productInfor);
-                    await category.save();
-                    productInfor.category = category;
-                }
-
-                // THỰC HIỆN CẬP NHẬT ẢNH MỚI CHO SẢN PHẨM
+                // LẤY THÔNG TIN DANH SÁCH HÌNH ẢNH CATEGORY
+                let images = [];
                 if(files.length) {
-                    for(let image of files) {
-                        productInfor.images.push(`images/${image.filename}`);
-                    }
+                    images = files.map((image) => {
+                        return image.path? image.path : '';
+                    })
                 }
 
-                // CẬP THÔNG TIN CƠ SỞ CỦA PRODUCT
-                productInfor.name = name;
-                productInfor.price = price;
-                productInfor.quantity = quantity;
-                productInfor.shortDes = shortDes;
-                productInfor.longDes = longDes;
-                await productInfor.save();
+                await ServiceProduct.update({model: productInfor, name, price, quantity, shortDes, longDes}, images, category, (information) => {
+                    let { status, message, error} = information;
 
-                // GỬI TRẢ TRẠNG THÁI VỀ NGƯỜI DÙNG
-                res.status(200).json({status: true, message: 'Modifi product information successfully'});
+                    if(status) {
+                        res.status(200).json({status: true, message});
+
+                    } else {
+                        res.status(406).json({status: false, message, error});
+                    }
+                })
 
             } catch (error) {
                 // PHUONG THỨC LỖI
@@ -153,29 +180,19 @@ class ControllerProduct {
         } else {
             try {
                 let { product } = req.body;
-                let productInfor = await ModelProduct.findById(product).populate(['category']).exec();                
 
-                // THỰC HIỆN XOÁ LIÊN KẾT GIỮA PRODUCT VÀ CATEGORY
-                productInfor.category.collections = productInfor.category.collections.filter((pro) => pro.toString() !== product);
-                await productInfor.category.save();
+                let productInfor = await ModelProduct.findById(product).populate(['category']).exec();
+                await ServiceProduct.delete({model: productInfor}, (information) => {
+                    let { status, message, error} = information;
 
-                if(productInfor.images) {
-                    for(let image of productInfor.images ) {
+                    if(status) {
+                        res.status(200).json({status: true, message});
 
-                        let photoPath = path.join(__dirname, "../../", "public", image);
-                        let status  = fs.existsSync(photoPath);
-                        if(status) {
-                            fs.unlinkSync(photoPath);
-                        }
+                    } else {
+                        res.status(406).json({status: false, message, error});
                     }
-                }
-
-                // TIẾN HÀNH XOÁ PRODUCT
-                await productInfor.deleteOne();
-
-                // XOÁ PRODUCT THÀNH CÔNG
-                res.status(200).json({status: true, message: 'Delete product successfully'});
-    
+                })
+                
             } catch (error) {
                 // PHƯƠNG THỨC LỖI
                 res.status(500).json({status: false, message: 'Internal server failed'});
@@ -183,7 +200,7 @@ class ControllerProduct {
         }
     }
 
-     // ADMIN XOÁ ẢNH CATEGORY
+     // ADMIN XOÁ ẢNH PRODUCT
      deletePhoto = async function (req, res, next) {
         let { errors } = validationResult(req);
 
@@ -195,19 +212,16 @@ class ControllerProduct {
 
                 let { id, photo } = req.body;
                 let productInfor = await ModelProduct.findById(id).exec();
-    
-                let photoPath = path.join(__dirname, "../../", "public", photo);
-    
-                // KIỂM TRA ẢNH CÓ TỒN TẠI THỰC HIỆN XOÁ
-                let imageExists = fs.existsSync(photoPath);
-                if(imageExists) {
-                    fs.unlinkSync(photoPath);
-                }
-    
-                // THỰC HIỆN XOÁ ẢNH TRONG MODEL
-                productInfor.images = productInfor.images.filter((image) => image !== photo);
-                await productInfor.save();
-                res.status(200).json({status: true, messgae: 'Delete photo product successfully'});
+
+                await ServiceProduct.deleteImage({model: productInfor}, photo, (information) => {
+                    let { status, message, error } = information;
+                    if(status) {
+                        res.status(200).json({status: true, message});
+
+                    } else {
+                        res.status(406).json({status: false, message, error});
+                    }
+                })
     
     
             } catch (error) {

@@ -5,16 +5,16 @@ const ModelProduct = require("../../model/model.product");
 const MiddlewareCategory = require("../../middleware/admin/middleware.category");
 const ControllerProduct = require("../../controller/admin/controller.product");
 
-// ROUTER LẤY VỀ SỐ LƯỢNG PRODUCT.
-router.get("/amount", ControllerProduct.getAmoutnProduct);
+// TRUY XUẤT SỐ LƯỢNG PRODUCT
+router.get("/amount", ControllerProduct.getAmount);
 
-// ROUTER TRẢ VỀ PRODUCT VỚI SỐ LƯỢNG ĐƯỢC CHỈ ĐỊNH
-router.get("/:limit/:start", ControllerProduct.getLimitProducts);
+// TRUY XUẤT DANH MỤC PRODUCT
+router.get("/:limit/:start", ControllerProduct.getProducts);
 
-// ROUTER TÌM PRODUCT THEO ID   
+// TRUY XUẤT PRODUCT THEO ID 
 router.get("/:product", ControllerProduct.getProductById);
 
-// ROUTER ADMIN TẠO MỚI PRODUCT.
+// CREATE PRODUCT
 router.post('/', [
     body('name').notEmpty().withMessage('Product name not empty'),
     body('price').notEmpty().withMessage('Product price not empty'),
@@ -24,7 +24,7 @@ router.post('/', [
 MiddlewareCategory.findCategoryById,
 ControllerProduct.createProduct);
 
-// ROUTER ADMIN SỬA THÔNG TIN TÀI KHOẢN
+// UPDATE PRODUCT
 router.patch('/', [
     body('name').custom( async(val, {req}) => {
         if(!val.trim()) throw Error('Product name not empty');
@@ -43,12 +43,12 @@ router.patch('/', [
 MiddlewareCategory.findCategoryById,
 ControllerProduct.modifiProduct);
 
-// ROUTER ADMIN XOÁ ACCOUNT
+// DELETE PRODUCT
 router.delete('/', [
     body("product").notEmpty().withMessage('Product ID not empty'),
 ], ControllerProduct.deleteProduct);
 
-// ROUTER XOÁ ẢNH CATEGORY
+// DELETE IMAGE PRODUCT
 router.delete('/photo', [
     body("id").notEmpty().withMessage("ID category not empty"),
     body("photo").notEmpty().withMessage("ID category not empty")
