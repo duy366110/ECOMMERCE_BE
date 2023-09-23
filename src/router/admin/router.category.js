@@ -4,16 +4,16 @@ const ModelCategory = require("../../model/model.category");
 const ControllerCategory = require("../../controller/admin/controller.category");
 
 // ROUTER PAGINATION LẤY THÔNG TIN DANH SÁCH CATEGORY
-router.get("/:limit/:start", ControllerCategory.getCategory);
+router.get("/:limit/:start", ControllerCategory.getCategories);
 
 // ROUTER LẤY SỐ LƯỢNG LOCATION HIỆN CÓ
-router.get("/amount", ControllerCategory.getCategoryAmount);
+router.get("/amount", ControllerCategory.getAmount);
 
 //ROUTER TÌN CATEGORY THEO ID
-router.get("/:category", ControllerCategory.findCategoryById);
+router.get("/:category", ControllerCategory.getCategoryById);
 
 // ROUTER ADMIN LẤY DANH SÁCH CATEGORY
-router.get("/", ControllerCategory.getCategory);
+router.get("/", ControllerCategory.getCategoriesAll);
 
 // ROUTER THÊM MỚI CATEGORY
 router.post("/",[
