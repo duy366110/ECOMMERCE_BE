@@ -1,7 +1,6 @@
-const mongodb = require('mongodb');
+"use strict"
 const ModelRole = require("../../model/model.role");
 const { validationResult } = require('express-validator');
-const ObjectId = mongodb.ObjectId;
 const ServiceRole = require("../../services/service.role");
 
 class ControllerRole {

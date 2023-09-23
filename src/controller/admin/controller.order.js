@@ -1,34 +1,44 @@
 "use strict"
-// const fs = require('fs');
-// const path = require('path');
-// const { validationResult } = require('express-validator');
 const ModelOrder = require("../../model/model.order");
+const ServiceOrder = require("../../services/service.order");
 
 class ControllerOrder {
 
     constructor() { }
 
-    // LẤY VỀ SỐ LƯỢNG PRODUCT HIỆN CÓ
-    getAmoutnOrder = async(req, res, next) => {
+    // TRUY XUẤT SỐ LƯỢNG ORDER
+    getAmount = async(req, res, next) => {
         try {
-            let amountOrder = await ModelOrder.find({}).count().exec();
-            res.status(200).json({
-                status: true,
-                message: 'Get order amout',
-                amount: amountOrder
-            });
+            await ServiceOrder.getAmount((information) => {
+                let { status , message, amount} = information;
+
+                if(status) {
+                    res.status(200).json({status, message, amount});
+
+                } else {
+                    res.status(406).json({status, message, error});
+                }
+            })
 
         } catch (error) {
             res.status(500).json({status: false, message: 'Internal server failed'});
         }
     }
 
-    // TRẢ VỀ THÔNG TIN PRODUCT VỚI SỐ LƯỢNG ĐƯỢC CHỈ ĐỊNH
-    getLimitOrders = async(req, res, next) => {
+    // TRUY XUẤT DANH MỤC ORDER
+    getOrders = async(req, res, next) => {
         try {
             let { limit, start } = req.params;
-            let ordersInfor = await ModelOrder.find({}).sort({data: 'desc'}).populate(['user', 'order.product']).limit(limit).skip(start).lean();
-            res.status(200).json({status: true, message: 'get order successfully', orders: ordersInfor});
+            await ServiceOrder.getLimit(limit, start, (information) => {
+                let { status , message, orders} = information;
+
+                if(status) {
+                    res.status(200).json({status, message, orders});
+
+                } else {
+                    res.status(406).json({status, message, error});
+                }
+            })
 
         } catch (error) {
             res.status(500).json({status: false, message: 'Internal server failed'});
