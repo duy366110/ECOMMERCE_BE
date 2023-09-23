@@ -3,7 +3,7 @@ const ModelCategory = require("../model/model.category");
 const ConfigEnv = require("../configs/config.env");
 const UtilCloudinary = require("../util/util.cloudinary");
 
-class ServiceRole {
+class ServiceCategory {
 
     constructor() { }
 
@@ -151,7 +151,7 @@ class ServiceRole {
     }
 }
 
-module.exports = new ServiceRole();
+module.exports = new ServiceCategory();
 
 
   
