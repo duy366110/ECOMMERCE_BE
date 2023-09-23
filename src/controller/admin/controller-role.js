@@ -22,8 +22,6 @@ class ControllerRole {
                     res.status(406).json({status, message, error});
                 }
             })
-
-
         } catch (error) {
             // PHƯƠNG THỨC LỖI
             res.status(500).json({status: false, message: 'Internal server failed'});
@@ -116,7 +114,6 @@ class ControllerRole {
                 // PHƯƠNG THỨC LỖI
                 res.status(500).json({status: false, message: 'Internal server failed'});
             }
-
         }
     }
 

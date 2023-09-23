@@ -3,17 +3,17 @@ const ModelUser = require("../../model/model.user");
 const { body } = require('express-validator');
 const ControllerUser = require('../../controller/admin/controller-user');
 
-// ROUTER LẤY VỀ SỐ LƯỢNG USER.
-router.get("/amount", ControllerUser.getAmoutnUser);
+// TRUY XUẤT SỐ LƯỢNG USER.
+router.get("/amount", ControllerUser.getAmount);
 
-// ROUTER TRẢ VỀ USER VỚI SỐ LƯỢNG ĐƯỢC CHỈ ĐỊNH
-router.get("/:limit/:start", ControllerUser.getLimitUser);
+// TRUY XUẤT DANH MỤC USERA
+router.get("/:limit/:start", ControllerUser.getUsers);
 
-// ROUTER TÌM USẺ THEO ID   
-router.get("/:user", ControllerUser.findUserById);
+// TRUY XUẤT DANH MỤC USER THEO ID   
+router.get("/:user", ControllerUser.getUserById);
 
-// ROUTER ADMIN TÌM TẤT CẢ ACCOUNT HIỆN CÓ
-router.get("/", ControllerUser.findUsers);
+// TRUY XUẤT DANH MỤC USER
+router.get("/", ControllerUser.getUsersAll);
 
 // ROUTER ADMIN TẠO MỚI ACCOUNT USER.
 router.post('/', [
