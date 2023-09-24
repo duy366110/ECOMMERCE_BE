@@ -9,11 +9,11 @@ class ServiceSearch {
     async searchProduct(search = {}, cb) {
         try {
             let products = null;
-            if(search.category === 'all') {
-                products = await Modelproduct.find({}).sort({createDate: 'desc'}).lean();
+            if(search.type === 'all') {
+                products = await Modelproduct.find({}).limit(search.limit).skip(search.start).sort({createDate: 'desc'}).lean();
 
             } else {
-                let categories = await ModelCategory.findById(search.category).sort({createDate: 'desc'}).populate(['collections']).lean();
+                let categories = await ModelCategory.findById(search.type).sort({createDate: 'desc'}).populate(['collections']).lean();
                 products = categories.collections;
             }
 

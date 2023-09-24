@@ -8,8 +8,8 @@ class ControllerSearch {
     // CLIENT - SEARCH SHOP PRODUCT
     async searchProductByType(req, res, next) {
         try {
-            let { type } = req.params;
-            await ServiceSearch.searchProduct({category: type}, (information) => {
+            let { type, limit, start } = req.params;
+            await ServiceSearch.searchProduct({type, limit, start}, (information) => {
                 let { status, message, products} = information;
 
                 if(status) {
@@ -25,6 +25,8 @@ class ControllerSearch {
             res.status(500).json({status: false, message: 'Internal server failed'});
         }
     }
+
+
 }
 
 module.exports = new ControllerSearch();
