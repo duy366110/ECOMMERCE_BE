@@ -10,7 +10,7 @@ class ServiceProduct {
     // LẤY DANH SÁCH PRODUCT
     async getLimit(limit, start, cb) {
         try {
-            let products = await ModelProduct.find({}).sort({createDate: 'desc'}).limit(limit).skip(start).lean();
+            let products = await ModelProduct.find({}).sort({createDate: 'desc'}).limit(limit).skip(start).populate(['category']).lean();
             cb({status: true, message: 'Get products successfully', products});
 
         } catch (error) {

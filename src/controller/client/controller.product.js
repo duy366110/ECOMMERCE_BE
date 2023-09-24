@@ -1,43 +1,65 @@
 "use strict"
 const ModelProduct = require("../../model/model.product");
+const ServiceProduct = require("../../services/service.product");
 
 class ControllerProduct {
 
     constructor() { }
 
-    // LẤY VỀ SỐ LƯỢNG PRODUCT HIỆN CÓ
-    getAmoutnProduct = async function (req, res, next) {
+    // TRUY XUẤT SỐ LƯỢNG PRODUCT
+    async getAmount(req, res, next) {
         try {
-            let amountProduct = await ModelProduct.find({}).count().lean();
-            res.status(200).json({
-                status: true,
-                message: 'Get product amout',
-                amount: amountProduct
-            });
+            await ServiceProduct.getAmount((information) => {
+                let { status , message, amount} = information;
+
+                if(status) {
+                    res.status(200).json({status, message, amount});
+
+                } else {
+                    res.status(406).json({status, message, error});
+                }
+            })
 
         } catch (error) {
+            // PHƯƠNG THỨC LỖI
             res.status(500).json({status: false, message: 'Internal server failed'});
         }
     }
 
-    // TRẢ VỀ THÔNG TIN PRODUCT VỚI SỐ LƯỢNG ĐƯỢC CHỈ ĐỊNH
-    getLimitProducts = async function (req, res, next) {
+    // TRUY XUẤT DANH SÁCH SẢN PHẨM
+    async getProducts(req, res, next) {
         try {
             let { limit, start } = req.params;
-            let productsInfor = await ModelProduct.find({}).populate(['category']).limit(limit).skip(start).lean();
-            res.status(200).json({status: true, message: 'Find products successfully', products: productsInfor});
+            await ServiceProduct.getLimit(limit, start, (information) => {
+                let { status , message, products} = information;
+
+                if(status) {
+                    res.status(200).json({status, message, products});
+
+                } else {
+                    res.status(406).json({status, message, error});
+                }
+            })
 
         } catch (error) {
+            // PHƯƠNG THỨC LỖI
             res.status(500).json({status: false, message: 'Internal server failed'});
         }
     }
 
-    // TIMG KIẾM PRODUCT THÔNG QUA ID
-    getProductById = async function (req, res, next) {
+    // TRUY XUẤT SẢN PHẨM THEO ID
+    async getProductById(req, res, next) {
         try {
             let { product } = req.params;
-            let productInfor = await ModelProduct.findById(product).populate(['category']).lean();
-            res.status(200).json({status: true, message: 'Fiind product successfully', product: productInfor});
+            await ServiceProduct.getById(product, (information) => {
+                let { status, message, product, error } = information;
+                if(status) {
+                    res.status(200).json({status, message, product});
+
+                } else {
+                    res.status(406).json({status, message, error});
+                }
+            })
 
         } catch (error) {
             // PHƯƠNG THỨC LỖI

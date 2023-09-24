@@ -34,7 +34,7 @@ class ServiceCategory {
     // TRUY XUẤT CATEGORY TỬ THEO ID
     async getById(id, cb) {
         try {
-            let category = await ModelCategory.findById(id).lean();
+            let category = await ModelCategory.findById(id).populate(['collections']).lean();
             cb({status: true, message: 'Get category successfully', category});
 
         } catch (error) {
