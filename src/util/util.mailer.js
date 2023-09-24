@@ -15,7 +15,7 @@ class UtilMailer {
                 <tr>
                     <td>${orderItem.product.name}</td>
                     <td>
-                        <img src="https://ecommercebe-5bbc136621ec.herokuapp.com/${orderItem.product.images[0]}" alt="Product image"/>
+                        <img style="width: 100px;" src="${orderItem.product.images[0]}" alt="Product image"/>
                     </td>
                     <td>${Number(orderItem.product.price).toFixed(6).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')} VND</td>
                     <td>${orderItem.quantity}</td>
@@ -45,7 +45,7 @@ class UtilMailer {
                             margin: 0px auto;
                             padding: 15px;
                             overflow-x: auto;
-                            width: 100%;
+                            width: 90%;
                         }
 
                         .table-information-order {
@@ -101,7 +101,7 @@ class UtilMailer {
                         </table>
 
                         <h2 class="user-order-total">
-                            <span>Tổng thanh toán:</span>
+                            <span>Tổng thanh toán: </span>
                             <span>${total} VND</span>
                         </h2>
                         <h2>Xin cảm ơn bạn!</h2>
