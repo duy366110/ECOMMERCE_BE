@@ -1,15 +1,24 @@
 "use strict"
 const ModelUser = require("../../model/model.user");
+const ServiceCart = require("../../services/service.cart");
 class ControllerCart {
 
     constructor() { }
 
-    // KHÁCH HÀNG LẤY DANH SÁCH SẢN PHẨM TRONG CART HIỆN TẠI
-    getCartOfUser = async function(req, res, next) {
+    // TRUY XUẤT DANH SÁCH CART HIỆN TẠI CỦA KHÁCH HÀNG
+    async getCartOfUser(req, res, next) {
         try {
             let { user } = req;
-            let userInfor = await ModelUser.findById(user._id).select('email, cart').populate(['cart.product']).lean();
-            res.status(200).json({status: true, message: 'User information cart', user: userInfor});
+            await ServiceCart.getCartOfUser({model: user}, (information) => {
+                let { status, message, cart, error} = information;
+
+                if(status) {
+                    res.status(200).json({status, message, user: cart});
+
+                } else {
+                    res.status(406).json({status, message, error});
+                }
+            })
 
         } catch (error) {
             // PHƯƠNG THỨC LỖI
@@ -19,56 +28,21 @@ class ControllerCart {
 
 
     // KHÁCH HÀNG THÊM SẢN PHẨM VÀO CART
-    cartAddProduct = async function (req, res, next) {
+    async cartAddProduct(req, res, next) {
         try {
             let { product, user } = req;
             let { quantity } = req.body;
 
-            if(product.quantity) {
-                // SETUP THÔNG TIN SẢN PHẨM TRƯỚC KHI LƯU
-                let infor = { product,  quantity};
-                if(user.cart.length) {
+            await ServiceCart.addProduct({model: user}, product, quantity, (information) => {
+                let { status, message, error} = information;
 
-                let cart = user.cart.find((cart) => cart.product._id.toString() === product._id.toString());
-                    if(cart) {
-                        // SẢN PHẨM ĐÃ TỒN TẠI VÀ TĂNG THÊM SỐ LƯỢNG SẢN PHẨM
-                        user.cart = user.cart.map((cartElm) => {
-                            if(cartElm.product._id.toString() === product._id.toString()) {
-                                cartElm.quantity = cartElm.quantity + quantity;
-                            }
-
-                            return cartElm;
-                        })
-
-                    } else {
-                        // SẢN PHẨM CHƯA CÓ THÊM MỚI
-                        user.cart.push(infor);
-
-                        // SỐ LƯỢNG THAM CHIẾU CỦA SẢN PHẨM TRONG MỖI HOÁ ĐƠN
-                        product.ref += 1;
-                    }
+                if(status) {
+                    res.status(200).json({status, message});
 
                 } else {
-                    // SẢN PHẨM CHƯA CÓ THÊM MỚI
-                    user.cart.push(infor);
-
-                    // SỐ LƯỢNG THAM CHIẾU CỦA SẢN PHẨM TRONG MỖI HOÁ ĐƠN
-                    product.ref += 1;
+                    res.status(406).json({status, message, error});
                 }
-
-                // LƯU SẢN PHẨM VÀO CART
-                await user.save();
-
-                // GIẢM SỐ LƯỢNG SẢN PHẨM TRONG KHO
-                product.quantity -= Number(quantity);
-                await product.save();
-
-                res.status(200).json({status: true, message: 'Add product to cart successfully'});
-
-            } else {
-                res.status(406).json({status: false, message: 'Out of product'});
-            }
-
+            })
 
         } catch (error) {
             // PHƯƠNG THỨC LỖI
@@ -76,26 +50,21 @@ class ControllerCart {
         }
     }
 
-    // TĂNG QUANTITY SẢN PHẨM TRONG CART
-    increaseQuantityProductOfCart = async function (req, res, next) {
+    // TĂNG THÊM SỐ LƯỢNG SẢN PHẨM TRONG CART
+    async increaseQuantityProductOfCart(req, res, next) {
         try {
             let { user, product } = req;
-            
-            user.cart = user.cart.map((cart) => {
-                if(cart.product._id.toString() === product._id.toString()) {
-                    cart.quantity++;
 
-                    // KHÁCH HÀNG MUA THÊM SẢN PHẨM GIẢM SỐ LƯỢNG SẢN PHẨM TRONG KHO
-                    product.quantity--;
+            await ServiceCart.increaseQuantityProductOfCart({model: user}, product, (information) => {
+                let { status, message, error} = information;
+
+                if(status) {
+                    res.status(200).json({status, message});
+
+                } else {
+                    res.status(406).json({status, message, error});
                 }
-                return cart;
             })
-
-            //LƯU THAY ĐỔI
-            await user.save();
-            await product.save();
-
-            res.status(200).json({status: true, message: 'Increase product in cart successfully'});
 
         } catch (error) {
             // PHƯƠNG THỨC LỖI
@@ -104,32 +73,19 @@ class ControllerCart {
     }
 
     // GIẢM QUANTITY SẢN PHẨM TRONG CART
-    decreaseQuantityProductOfCart = async function (req, res, next) {
+    async decreaseQuantityProductOfCart(req, res, next) {
         try {
             let { user, product } = req;
-            // let { product } = req.body;
+            await ServiceCart.decreaseQuantityProductOfCart({model: user}, product, (information) => {
+                let { status, message, error} = information;
 
-            user.cart = user.cart.map((cart) => {
-                if(cart.product._id.toString() === product._id.toString()) {
-                    cart.quantity--;
+                if(status) {
+                    res.status(200).json({status, message});
 
-                    // TĂNG SỐ LƯỢNG SẢN PHẨM TRONG KHO CỦA SẢN PHẨM
-                    product.quantity++;
-
-                    // SỐ LƯỢNG SẢN PHẨM TRONG USER CART LÀ 0, THỰC HIỆN XOÁ THAM CHIẾU TỪ USER ĐẾN PRODUCT
-                    if(!cart.quantity) {
-                        product.ref--;
-                    }
-
+                } else {
+                    res.status(406).json({status, message, error});
                 }
-                return cart;
-            }).filter((cart) => cart.quantity)
-
-            // LƯU THAY ĐỔI
-            await user.save();
-            await product.save();
-
-            res.status(200).json({status: true, message: 'Increase product in cart successfully'});
+            })
 
         } catch (error) {
             // PHƯƠNG THỨC LỖI
@@ -137,31 +93,21 @@ class ControllerCart {
         }
     }
 
-    // KHÁCH HÀNG THỰC HIỆN LOẠI BỎ SẢN PHẨM TRONG CART
-    cartRemoveProduct = async function(req, res, next) {
+    // XOÁ SẢN PHẨM TRONG CART
+    async cartRemoveProduct(req, res, next) {
         try {
 
             let { user, product } = req;
+            await ServiceCart.cartRemoveProduct({model: user}, product, (information) => {
+                let { status, message, error} = information;
 
-            user.cart = user.cart.map((cartItem) => {
+                if(status) {
+                    res.status(200).json({status, message});
 
-                if(cartItem.product._id.toString() === product._id.toString()) {
-                    // TRẢ LẠI SỐ SẢN PHẨM KHÁCH HÀNG ĐÃ ORDER VỀ KHO
-                    product.quantity += Number(cartItem.quantity);
-
-                    // HUỶ THAM CHIẾU TỪ CART USER ĐẾN PRODUCT
-                    product.ref -= 1;
-                    return null;
+                } else {
+                    res.status(406).json({status, message, error});
                 }
-
-                return cartItem;
-            }).filter((cartItem) => cartItem)
-
-            // LƯU THAY ĐỔI
-            await user.save();
-            await product.save();
-
-            res.status(200).json({status: true, message: 'Remove product to cart successfully'});
+            })
 
         } catch (error) {
             // PHƯƠNG THỨC LỖI

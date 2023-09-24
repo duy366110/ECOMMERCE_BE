@@ -105,6 +105,7 @@ class ServiceUser {
                 email: user.email,
                 password: UtilBcrypt.has(user.password),
                 phonenumber: user.phone,
+                address: user.address,
                 role
             });
 
