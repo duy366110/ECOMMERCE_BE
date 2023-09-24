@@ -3,7 +3,7 @@ const router = require('express').Router();
 const { body } = require('express-validator');
 const ModelUser = require("../../model/model.user");
 const ConfigEnv = require("../../configs/config.env");
-const ControllerAuth = require("../../controller/common/controller-auth");
+const ControllerAuth = require("../../controller/common/controller.auth");
 
 // NGƯỜI DÙNG ĐĂNG NHẬP QUẢN TRỊ HỆ THỐNG
 router.post('/signin/admin', [
