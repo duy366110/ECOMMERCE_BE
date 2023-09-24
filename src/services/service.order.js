@@ -29,9 +29,32 @@ class ServiceOrder {
         }
     }
 
+    // TẠO MỚI ORDER
+    async create(user = {}, cb) {
+        try {
+            let orderInfor = await ModelOrder.create({
+                user: user.model, 
+                fullName: user.fullName,
+                email: user.email,
+                phone: user.phone,
+                address: user.address,
+                coupon: user.coupon,
+                order: user.model.cart
+            });
+
+            // THỰC HIỆN TẠO LIÊN KẾT THÔNG TIN ĐƠN HÀNG VÀO USER ACCOUNT
+            user.model.cart = user.model.cart.map((cartItem) => null).filter((cartItem) => cartItem);
+            user.model.order.push(orderInfor);
+            await user.model.save();
+
+            cb({status: true, message: 'Create order done', order: orderInfor});
+
+        } catch (error) {
+            // THỰC HIỆN PHƯƠNG THỨC LỖI
+            cb({status: false, message: 'Method failed', error});
+        }
+    }
+
 }
 
 module.exports = new ServiceOrder();
-
-
-  
