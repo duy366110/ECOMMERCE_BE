@@ -6,6 +6,7 @@ class ServiceSearch {
 
     constructor() { }
 
+    // SEẢCH SẢN PHẨM THEO TYPE CATEGỎY VÀ MẬT ĐỊNH
     async searchProduct(search = {}, cb) {
         try {
             let products = null;
@@ -18,6 +19,18 @@ class ServiceSearch {
             }
 
             cb({status: true, message: 'Search product by category successfully', products});
+
+        } catch (error) {
+            // PHƯƠNG THỨC LỖI
+            cb({status: false, message: 'Method failed', error});
+        }
+    }
+
+    // SEARCH SẢN PHẨM GIÁ TRỊ SEARCH KHÁCH HÀNG
+    async searchProductByValueInput(search, cb) {
+        try {
+            let products = await Modelproduct.find({name: { $regex: `.*${search.value}.*`}}).lean();
+            cb({status: true, message: 'Search products successfully', products});
 
         } catch (error) {
             // PHƯƠNG THỨC LỖI
