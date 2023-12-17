@@ -29,7 +29,20 @@ class ServiceSearch {
     // SEARCH SẢN PHẨM GIÁ TRỊ SEARCH KHÁCH HÀNG
     async searchProductByValueInput(search, cb) {
         try {
-            let products = await Modelproduct.find({name: { $regex: `.*${search.value}.*`}}).lean();
+            let products = await Modelproduct
+            .find(
+                {
+                    $text: {
+                        $search: search.value
+                    }
+                },
+                {
+                    score: {
+                        $meta: "textScore"
+                    }
+                })
+            .sort({score: {$meta: 'textScore'}})
+            .lean();
             cb({status: true, message: 'Search products successfully', products});
 
         } catch (error) {

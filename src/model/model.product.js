@@ -52,4 +52,7 @@ const ModelProduct = new Schema({
     collection: COLLECTION_NAME
 })
 
+// CREATE INDEX PRODUCT FOR SEARCH
+ModelProduct.index({name: 'text', shortDes: 'text', longDes: 'text'});
+
 module.exports = mongoose.model(COLLECTION_NAME, ModelProduct);
