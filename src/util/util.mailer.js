@@ -116,13 +116,13 @@ class UtilMailer {
         let transporter = NodeMailer.createTransport({
             service: 'gmail',
             auth: {
-                user: 'ecommerce05051995@gmail.com',
-                pass: 'wzfo dmwe uksc jcpk'
+                user: 'phuongduynguyen75@gmail.com',
+                pass: 'boqn xtvm ggvs ywgz'
             }
         })
 
         var mailOption = {
-            from: 'ecommerce05051995@gmail.com',
+            from: 'phuongduynguyen75@gmail.com',
             to: email,
             subject: 'ECOMMER TRANSACTION',
             html: template
