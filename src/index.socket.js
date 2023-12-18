@@ -10,6 +10,8 @@ class ReadtimeServer {
     on(server) {
         const io = require('socket.io')(server, {
             cors: MiddlewareCors.corsSocket().cors,
+            // pingTimeout: 30000, // 30 seconds
+            // pingInterval: 5000, // 5 seconds
         });
 
         io.on('connection', (socket) => {
