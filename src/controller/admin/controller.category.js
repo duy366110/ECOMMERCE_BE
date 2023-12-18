@@ -99,7 +99,7 @@ class ControllerCategory {
         } else {
             try {
                 let { files } =  req;
-                let { title } = req.body;
+                let { title, des } = req.body;
 
                 // LẤY THÔNG TIN DANH SÁCH HÌNH ẢNH CATEGORY
                 let images = [];
@@ -110,7 +110,7 @@ class ControllerCategory {
                 }
 
                 // TẠO MỚI THÔNG TIN CATEGORY
-                await ServiceCategory.create({title}, images, (information) => {
+                await ServiceCategory.create({title, des}, images, (information) => {
                     let { status, message, error } = information;
                     if(status) {
                         res.status(200).json({status: true, message});

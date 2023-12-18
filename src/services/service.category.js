@@ -58,7 +58,7 @@ class ServiceCategory {
     // CARETE CATEGORY
     async create(category = {}, images, cb) {
         try {
-            await ModelCategory.create({title: category.title, images });
+            await ModelCategory.create({title: category.title, desc: category.des, images });
             cb({status: true, message: 'Create category successfully'});
 
         } catch (error) {

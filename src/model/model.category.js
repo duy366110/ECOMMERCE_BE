@@ -1,8 +1,7 @@
 'use strict'
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-
-const COLLECTION_NAME = 'categories';
+const configDb = require("../configs/config.db");
 
 const ModelCategory = new Schema({
     title: {
@@ -30,11 +29,11 @@ const ModelCategory = new Schema({
     collections: [
         {
             type: Schema.Types.ObjectId,
-            ref: 'products'
+            ref: configDb.collection.product
         }
     ]
 }, {
-    collection: COLLECTION_NAME
+    collection: configDb.collection.category
 })
 
-module.exports = mongoose.model(COLLECTION_NAME, ModelCategory);
+module.exports = mongoose.model(configDb.collection.category, ModelCategory);
