@@ -3,7 +3,8 @@
 const configDb = {
     collection: {
         category: "categories",
-        product: "products"
+        product: "products",
+        featured: "featured"
     }
 }
 
