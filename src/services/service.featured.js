@@ -31,16 +31,16 @@ class ServiceFeatured {
         // }
     }
 
-    // TRUY XUẤT CATEGORY TỬ THEO ID
+    // TRUY XUẤT FEATURE TỬ THEO ID
     async getById(id, cb) {
-        // try {
-        //     let category = await ModelCategory.findById(id).populate(['collections']).lean();
-        //     cb({status: true, message: 'Get category successfully', category});
+        try {
+            let feature = await ModelFeatured.findById(id).lean();
+            cb({status: true, message: 'Get feature successfully', feature});
 
-        // } catch (error) {
-        //     // THỰC HIỆN PHƯƠNG THỨC LỖI
-        //     cb({status: false, message: 'Method failed', error});
-        // }
+        } catch (error) {
+            // THỰC HIỆN PHƯƠNG THỨC LỖI
+            cb({status: false, message: 'Method failed', error});
+        }
     }
 
     // LẤY SỐ LƯỢNG FEATURED
@@ -52,6 +52,16 @@ class ServiceFeatured {
         } catch (error) {
             // THỰC HIỆN PHƯƠNG THỨC LỖI
             cb({status: false, message: 'Method failed', error});
+        }
+    }
+
+    // TRUY CAP FEATURE THEO ID
+    async findFeatureById(id = "") {
+        try {
+            return await ModelFeatured.findById(id).exec();
+        } catch (error) {
+            // THỰC HIỆN PHƯƠNG THỨC LỖI
+            return null;
         }
     }
 
@@ -94,33 +104,33 @@ class ServiceFeatured {
         // }
     }
 
-    // DELETE CATEGORY
-    async delete(category = {}, cb) {
-        // try {
-        //     if(category.model.images.length) {
-        //         let images = [];
-        //         for(let image of category.model.images) {
-        //             let imageName = image.split('/').splice(-1).join('').split(".")[0];
+    // DELETE FEATURE
+    async delete(feature = {}, cb) {
+        try {
+            if(feature.model.images.length) {
+                let images = [];
+                for(let image of feature.model.images) {
+                    let imageName = image.split('/').splice(-1).join('').split(".")[0];
 
-        //             // THUC HIEN KIEM TRA XEM FILE CO TON TAI TREN CLOUD
-        //             let {status, result } = await UtilCloudinary.exists(`${ConfigEnv.CLOUDINARY_DIRECTORY}/${imageName}`);
-        //             if(status) {
-        //                 images.push(`${ConfigEnv.CLOUDINARY_DIRECTORY}/${imageName}`);
-        //             }
-        //         }
+                    // THUC HIEN KIEM TRA XEM FILE CO TON TAI TREN CLOUD
+                    let {status, result } = await UtilCloudinary.exists(`${ConfigEnv.CLOUDINARY_DIRECTORY}/${imageName}`);
+                    if(status) {
+                        images.push(`${ConfigEnv.CLOUDINARY_DIRECTORY}/${imageName}`);
+                    }
+                }
                 
-        //         if(images.length) {
-        //             await UtilCloudinary.destroyMany(images);
-        //         }
-        //     }
+                if(images.length) {
+                    await UtilCloudinary.destroyMany(images);
+                }
+            }
 
-        //     await category.model.deleteOne();
-        //     cb({status: true, message: 'Delete category successfully'});
+            await feature.model.deleteOne();
+            cb({status: true, message: 'Delete feature successfully'});
 
-        // } catch (error) {
-        //     // THỰC HIỆN PHƯƠNG THỨC LỖI
-        //     cb({status: false, message: 'Method failed', error});
-        // }
+        } catch (error) {
+            // THỰC HIỆN PHƯƠNG THỨC LỖI
+            cb({status: false, message: 'Method failed', error});
+        }
     }
 
     // DELETE PHOTO CATEGORY

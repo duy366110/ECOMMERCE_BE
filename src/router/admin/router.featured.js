@@ -52,20 +52,14 @@ router.post("/",[
 
 // ], ControllerCategory.modifiCategory);
 
-// DELETE CATEGORY
-// router.delete("/", [
-//     body("category").custom( async(val, { req }) => {
-//         if(!val.trim()) throw Error('Category ID not empty');
-
-//         // KIỂM TRA CATEGORY CÓ LIÊN ĐẾN HOTEL -  KHÔNG THỰC HIỆN CHỨC NĂNG
-//         let categoryInfor = await ModelCategory.findById(val);
-//         if(categoryInfor.collections.length) {
-//             throw Error('Category reference hotel not delete');
-//         }
-
-//         return true;
-//     })
-// ], ControllerCategory.deleteCategory);
+// DELETE FEATURE
+router.delete("/", [
+    body("feature").custom( async(val, { req }) => {
+        if(!val.trim()) throw Error('Feature ID not empty');
+        
+        return true;
+    })
+], ControllerFeatured.deleteFeature);
 
 // DELETE CATEGORY IMAGE
 // router.delete('/photo', [

@@ -165,35 +165,35 @@ class ControllerFeatured {
         // }
     }
 
-    // ADMIN DELETE CATEGORY
-    deleteCategory = async (req, res, next) => {
-        // let { errors } = validationResult(req);
+    // ADMIN DELETE FEATURE
+    deleteFeature = async (req, res, next) => {
+        let { errors } = validationResult(req);
 
-        // if(errors.length) {
-        //     res.status(406).json({status: false, message: errors[0].msg});
+        if(errors.length) {
+            res.status(406).json({status: false, message: errors[0].msg});
 
-        // } else {
-        //     try {
-        //         let { category } = req.body;
+        } else {
+            try {
+                let { feature } = req.body;
                 
-        //         // THỰC HIỆN XOÁ CATEGORY THÔNG QUA ID
-        //         let categoryInfor = await ModelCategory.findById(category);
+                // THỰC HIỆN XOÁ FEATURE THÔNG QUA ID
+                let featureInfor = await ServiceFeatured.findFeatureById(feature);
 
-        //         await ServiceCategory.delete({model: categoryInfor}, (information) => {
-        //             let { status, message, error } = information;
-        //             if(status) {
-        //                 res.status(200).json({status: true, message});
+                await ServiceFeatured.delete({model: featureInfor}, (information) => {
+                    let { status, message, error } = information;
+                    if(status) {
+                        res.status(200).json({status: true, message});
 
-        //             } else {
-        //                 res.status(406).json({status: false, message, error});
-        //             }
-        //         });
+                    } else {
+                        res.status(406).json({status: false, message, error});
+                    }
+                });
 
-        //     } catch (error) {
-        //         // PHƯƠNG THỨC LỖI
-        //         res.status(500).json({status: false, message: 'Internal server failed'});
-        //     }
-        // }
+            } catch (error) {
+                // PHƯƠNG THỨC LỖI
+                res.status(500).json({status: false, message: 'Internal server failed'});
+            }
+        }
     }
 
     // ADMIN XOÁ ẢNH CATEGORY
