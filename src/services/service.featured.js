@@ -92,8 +92,8 @@ class ServiceFeatured {
             }
 
             feature.model.title = feature.title;
-            feature.model.desc =  feature.desc;
-            feature.model.titleColor = feature.titleColor;
+            feature.model.desc =  feature.des;
+            feature.model.titleColor = feature.color;
             await feature.model.save();
 
             cb({status: true, message: 'Update category successfully'});
