@@ -19,16 +19,16 @@ class ServiceFeatured {
         }
     }
 
-    // TRUY XUẤT DANH SÁCH CATEGORY
-    async getAll(cb) {
-        // try {
-        //     let categories = await ModelCategory.find({}).lean();
-        //     cb({status: true, message: 'Get categories successfully', categories});
+    // TRUY XUẤT DANH SÁCH FEATURE
+    async getAllFeatured(cb) {
+        try {
+            let featureds = await ModelFeatured.find({}).lean();
+            cb({status: true, message: 'Get featureds successfully', featureds});
 
-        // } catch (error) {
-        //     // THỰC HIỆN PHƯƠNG THỨC LỖI
-        //     cb({status: false, message: 'Method failed', error});
-        // }
+        } catch (error) {
+            // THỰC HIỆN PHƯƠNG THỨC LỖI
+            cb({status: false, message: 'Method failed', error});
+        }
     }
 
     // TRUY XUẤT FEATURE TỬ THEO ID
