@@ -2,14 +2,9 @@ const router = require("express").Router();
 const { body } = require("express-validator");
 const ControllerFeatured = require("../../controller/admin/controller.featured");
 
-// TRUY XUẤT FEATUREDS
 router.get("/:limit/:start", ControllerFeatured.getFeatureds);
-
-// TRUY XUẤT SỐ LƯỢNG FEATURED
 router.get("/amount", ControllerFeatured.getAmount);
-
-// TRUY XUẤT CATEGORY THEO ID
-// router.get("/:category", ControllerCategory.getCategoryById);
+router.get("/:feature", ControllerFeatured.getFeatureById);
 
 // TRUY XUẤT DANH MỤC CATEGORY
 // router.get("/", ControllerCategory.getCategoriesAll);
@@ -31,26 +26,20 @@ router.post("/",[
     }),
 ], ControllerFeatured.createFeatured);
 
-// UPDATE CATEGORY
-// router.patch("/", [
-//     body('category').notEmpty().withMessage('ID category not empty'),
-//     body('title').custom( async(val, {req}) => {
+// UPDATE FEATURE
+router.patch("/", [
+    body('feature').notEmpty().withMessage('ID category not empty'),
+    body('title').custom( async(val, {req}) => {
 
-//         // KIỂM TRA TITLE KHÔNG ĐƯỢC TRỐNG
-//         if(!val.trim()) {
-//             throw Error("Title not empty");
-//         }
+        // KIỂM TRA TITLE KHÔNG ĐƯỢC TRỐNG
+        if(!val.trim()) {
+            throw Error("Title not empty");
+        }
 
-//         // KIỂM TRA TITLE CÓ  ĐÃ ĐƯỢC SỬ DỤNG HAY CHƯA
-//         let categoryInfor = await ModelCategory.find({title: {$eq: val}});
-//         if(categoryInfor.length) {
-//             throw Error("category exists already");
-//         }
+        return true;
+    }),
 
-//         return true;
-//     }),
-
-// ], ControllerCategory.modifiCategory);
+], ControllerFeatured.modifiFeature);
 
 // DELETE FEATURE
 router.delete("/", [

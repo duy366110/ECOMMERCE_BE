@@ -32,7 +32,7 @@ class ServiceFeatured {
     }
 
     // TRUY XUẤT FEATURE TỬ THEO ID
-    async getById(id, cb) {
+    async getFeatureById(id, cb) {
         try {
             let feature = await ModelFeatured.findById(id).lean();
             cb({status: true, message: 'Get feature successfully', feature});
@@ -82,26 +82,27 @@ class ServiceFeatured {
         }
     }
 
-    // UPDATE CATEGORY
-    async update(category = {}, images = [], cb) {
-        // try {
-        //     if(images.length) {
-        //         for(let image of images) {
-        //             category.model.images.push(image);
-        //         }
-        //     }
+    // UPDATE FEATURE
+    async updateFeatured(feature = {}, images = [], cb) {
+        try {
+            if(images.length) {
+                for(let image of images) {
+                    feature.model.images.push(image);
+                }
+            }
 
-        //     category.model.title = category.title;
-        //     category.model.updateDate = new Date();
-        //     await category.model.save();
+            feature.model.title = feature.title;
+            feature.model.desc =  feature.desc;
+            feature.model.titleColor = feature.titleColor;
+            await feature.model.save();
 
-        //     cb({status: true, message: 'Update category successfully'});
+            cb({status: true, message: 'Update category successfully'});
 
 
-        // } catch (error) {
-        //     // THỰC HIỆN PHƯƠNG THỨC LỖI
-        //     cb({status: false, message: 'Method failed', error});
-        // }
+        } catch (error) {
+            // THỰC HIỆN PHƯƠNG THỨC LỖI
+            cb({status: false, message: 'Method failed', error});
+        }
     }
 
     // DELETE FEATURE

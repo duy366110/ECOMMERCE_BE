@@ -46,25 +46,25 @@ class ControllerFeatured {
         // }
     }
 
-    // TRUY XUẤT CATEGORY THEO ID
-    getCategoryById = async (req, res, next) => {
-        // try {
-        //     let { category } = req.params;
-        //     await ServiceCategory.getById(category, (information) => {
-        //         let { status, message, category, error } = information;
-        //         if(status) {
-        //             res.status(200).json({status, message, category});
+    // TRUY XUẤT FEATURE THEO ID
+    async getFeatureById(req, res, next) {
+        try {
+            let { feature } = req.params;
+            await ServiceFeatured.getFeatureById(feature, (information) => {
+                let { status, message, feature, error } = information;
+                if(status) {
+                    res.status(200).json({status, message, feature});
 
-        //         } else {
-        //             res.status(406).json({status, message, error});
-        //         }
-        //     })
+                } else {
+                    res.status(406).json({status, message, error});
+                }
+            })
 
-        // } catch (error) {
-        //     // PHƯƠNG THỨC LỖI
-        //     res.status(500).json({status: false, message: 'Internal server failed'});
+        } catch (error) {
+            // PHƯƠNG THỨC LỖI
+            res.status(500).json({status: false, message: 'Internal server failed'});
 
-        // }
+        }
     }
 
     // TRUY XUẤT SỐ LƯỢNG FEATURED
@@ -88,7 +88,7 @@ class ControllerFeatured {
     }
 
     // ADMIN THÊM MỚI FEATURED
-    createFeatured = async(req, res, next) => {
+    async createFeatured(req, res, next) {
         let { errors } = validationResult(req);
 
         if(errors.length) {
@@ -126,43 +126,43 @@ class ControllerFeatured {
     }
 
     // ADMIN TIẾN HÀNH CẬP NHẬT
-    modifiCategory = async(req, res, next) => {
-        // let { errors } = validationResult(req);
+    async modifiFeature(req, res, next) {
+        let { errors } = validationResult(req);
 
-        // if(errors.length) {
-        //     res.status(406).json({status: false, message: errors[0].msg});
+        if(errors.length) {
+            res.status(406).json({status: false, message: errors[0].msg});
 
-        // } else {
-        //     try {
-        //         let { category, title } = req.body;
-        //         let { files } =  req;
+        } else {
+            try {
+                let { feature, title, des, color } = req.body;
+                let { files } =  req;
 
-        //         let categoryInfor = await ModelCategory.findById(category);
+                let featureInfor = await ServiceFeatured.findFeatureById(feature);
 
-        //         // LẤY THÔNG TIN DANH SÁCH HÌNH ẢNH CATEGORY
-        //         let images = [];
-        //         if(files.length) {
-        //             images = files.map((image) => {
-        //                 return image.path? image.path : '';
-        //             })
-        //         }
+                // LẤY THÔNG TIN DANH SÁCH HÌNH ẢNH FEATURE
+                let images = [];
+                if(files.length) {
+                    images = files.map((image) => {
+                        return image.path? image.path : '';
+                    })
+                }
 
-        //         // TẠO MỚI THÔNG TIN CATEGORY
-        //         await ServiceCategory.update({model: categoryInfor, title}, images, (information) => {
-        //             let { status, message, error } = information;
-        //             if(status) {
-        //                 res.status(200).json({status: true, message});
+                // TẠO MỚI THÔNG TIN FEATURE
+                await ServiceFeatured.updateFeatured({model: featureInfor, title, des, color}, images, (information) => {
+                    let { status, message, error } = information;
+                    if(status) {
+                        res.status(200).json({status: true, message});
 
-        //             } else {
-        //                 res.status(406).json({status: false, message, error});
-        //             }
-        //         })
+                    } else {
+                        res.status(406).json({status: false, message, error});
+                    }
+                })
 
-        //     } catch (error) {
-        //         // PHƯƠNG THỨC LỖI
-        //         res.status(500).json({status: false, message: 'Internal server failed'});
-        //     }
-        // }
+            } catch (error) {
+                // PHƯƠNG THỨC LỖI
+                res.status(500).json({status: false, message: 'Internal server failed'});
+            }
+        }
     }
 
     // ADMIN DELETE FEATURE
