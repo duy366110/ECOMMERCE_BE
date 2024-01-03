@@ -199,7 +199,7 @@ class ControllerProduct {
     }
 
      // ADMIN XOÁ ẢNH PRODUCT
-     deletePhoto = async function (req, res, next) {
+     deleteProductPhoto = async function (req, res, next) {
         let { errors } = validationResult(req);
 
         if(errors.length) {
@@ -207,11 +207,12 @@ class ControllerProduct {
 
         } else {
             try {
-
                 let { id, photo } = req.body;
-                let productInfor = await ModelProduct.findById(id).exec();
 
-                await ServiceProduct.deleteImage({model: productInfor}, photo, (information) => {
+                await ServiceProduct.deleteProductImage(
+                    {model: await ServiceProduct.findProductById(id)},
+                    photo,
+                    (information) => {
                     let { status, message, error } = information;
                     if(status) {
                         res.status(200).json({status: true, message});

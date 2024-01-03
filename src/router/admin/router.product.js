@@ -50,8 +50,8 @@ router.delete('/', [
 
 // DELETE IMAGE PRODUCT
 router.delete('/photo', [
-    body("id").notEmpty().withMessage("ID category not empty"),
-    body("photo").notEmpty().withMessage("ID category not empty")
-], ControllerProduct.deletePhoto);
+    body("id").notEmpty().withMessage("ID product not empty"),
+    body("photo").notEmpty().withMessage("ID product not empty")
+], ControllerProduct.deleteProductPhoto);
 
 module.exports = router;
