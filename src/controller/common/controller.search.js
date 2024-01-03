@@ -5,18 +5,23 @@ class ControllerSearch {
 
     constructor() { }
 
-    // CLIENT - SEARCH SHOP PRODUCT
-    async searchProductByType(req, res, next) {
+    /**
+     * SEARCH PRODUCT BY TYPE CATEGORY AND LIMIT
+     * @param {*} req 
+     * @param {*} res 
+     * @param {*} next 
+     */
+    async searchProductByTypeCategory(req, res, next) {
         try {
             let { type, limit, start } = req.params;
-            await ServiceSearch.searchProduct({type, limit, start}, (information) => {
+            await ServiceSearch.searchProductByTypeCategory({type, limit, start}, (information) => {
                 let { status, message, products} = information;
 
                 if(status) {
-                    res.status(200).json({status, message, products});
+                    return res.status(200).json({status, message, products});
 
                 } else {
-                    res.status(406).json({status, message, error});
+                    return res.status(406).json({status, message, error});
                 }
             })
 
@@ -26,17 +31,24 @@ class ControllerSearch {
         }
     }
 
-    async searchAmountCategory(req, res, next) {
+    
+    /**
+     * SEARCH AMOUNT PRODUCT BY TYPE CATEGORY
+     * @param {*} req 
+     * @param {*} res 
+     * @param {*} next 
+     */
+    async searchAmountProductByCategory(req, res, next) {
         try {
-            let { category } = req.params;
+            let { category } = req.query;
             await ServiceSearch.searchAmountProductByCategoryId(category, (information) => {
                 let { status, message, amount} = information;
 
                 if(status) {
-                    res.status(200).json({status, message, amount});
+                    return res.status(200).json({status, message, amount});
 
                 } else {
-                    res.status(406).json({status, message, error});
+                    return res.status(406).json({status, message, error});
                 }
             })
 
