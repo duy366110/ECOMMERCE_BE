@@ -196,34 +196,36 @@ class ControllerFeatured {
         }
     }
 
-    // ADMIN XOÁ ẢNH CATEGORY
-    deletePhoto = async (req, res, next) => {
-        // let { errors } = validationResult(req);
+    // ADMIN XOÁ ẢNH FEATURED
+    deleteFeaturedPhoto = async (req, res, next) => {
+        let { errors } = validationResult(req);
 
-        // if(errors.length) {
-        //     res.status(406).json({status: false, message: errors[0].msg});
+        if(errors.length) {
+            res.status(406).json({status: false, message: errors[0].msg});
 
-        // } else {
-        //     try {
-        //         let { id, photo } = req.body;
-        //         let categoryInfor = await ModelCategory.findById(id);
+        } else {
+            try {
+                let { id, photo } = req.body;
+                
+                await ServiceFeatured.deleteImage(
+                    {model: await ServiceFeatured.findFeatureById(id)},
+                    photo, (information) => {
 
-        //         await ServiceCategory.deleteImage({model: categoryInfor}, photo, (information) => {
-        //             let { status, message, error } = information;
-        //             if(status) {
-        //                 res.status(200).json({status: true, message});
+                    let { status, message, error } = information;
+                    if(status) {
+                        res.status(200).json({status: true, message});
 
-        //             } else {
-        //                 res.status(406).json({status: false, message, error});
-        //             }
-        //         })
+                    } else {
+                        res.status(406).json({status: false, message, error});
+                    }
+                })
     
     
-        //     } catch (error) {
-        //         // PHƯƠNG THỨC LỖI
-        //         res.status(500).json({status: false, message: 'Internal server failed'});
-        //     }
-        // }
+            } catch (error) {
+                // PHƯƠNG THỨC LỖI
+                res.status(500).json({status: false, message: 'Internal server failed'});
+            }
+        }
     }
 
 }
