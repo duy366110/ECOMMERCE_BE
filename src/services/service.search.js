@@ -1,6 +1,6 @@
 "use strict"
-const ModelCategory = require("../model/model.category");
 const Modelproduct = require("../model/model.product");
+const ServiceProduct = require("../services/service.product");
 
 class ServiceSearch {
 
@@ -9,16 +9,15 @@ class ServiceSearch {
     // SEẢCH SẢN PHẨM THEO TYPE CATEGỎY VÀ MẬT ĐỊNH
     async searchProduct(search = {}, cb) {
         try {
-            let products = null;
-            if(search.type === 'all') {
-                products = await Modelproduct.find({}).limit(search.limit).skip(search.start).sort({createDate: 'desc'}).lean();
-
-            } else {
-                let categories = await ModelCategory.findById(search.type).sort({createDate: 'desc'}).populate(['collections']).lean();
-                products = categories.collections;
+            let results = null;
+            if(search.type === "all") {
+               await ServiceProduct.getLimit(search.limit, search.start, (information) => {
+                    let { status, products } = information;
+                    results = status? products : [];
+                })
             }
 
-            cb({status: true, message: 'Search product by category successfully', products});
+            cb({status: true, message: 'Search product by category successfully', products: results});
 
         } catch (error) {
             // PHƯƠNG THỨC LỖI
