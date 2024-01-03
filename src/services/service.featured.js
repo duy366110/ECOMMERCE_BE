@@ -134,36 +134,36 @@ class ServiceFeatured {
         }
     }
 
-    // DELETE PHOTO CATEGORY
-    async deleteImage(category = {}, photo = '', cb) {
-        // try {
-        //     // KIỂM TRA ẢNH CÓ TỒN TẠI THỰC HIỆN XOÁ
-        //     if(category.model.images.length) {
+    // DELETE PHOTO FEATURED
+    async deleteImage(featured = {}, photo = '', cb) {
+        try {
+            // KIỂM TRA ẢNH CÓ TỒN TẠI THỰC HIỆN XOÁ
+            if(featured.model.images.length) {
 
-        //         for(let image of category.model.images) {
-        //             if(image === photo) {
-        //                 let imageName = image.split('/').splice(-1).join('').split(".")[0];
+                for(let image of featured.model.images) {
+                    if(image === photo) {
+                        let imageName = image.split('/').splice(-1).join('').split(".")[0];
 
-        //                 // THỰC HIỆN KIỂM TRA XEM FILE TỒN TẠI VÀ XOÁ FILE CLOUD
-        //                 let {status, result } = await UtilCloudinary.exists(`${ConfigEnv.CLOUDINARY_DIRECTORY}/${imageName}`);
-        //                 if(status) {
-        //                     await UtilCloudinary.destroy(`${ConfigEnv.CLOUDINARY_DIRECTORY}/${imageName}`);
-        //                     break;
-        //                 }
-        //             }
-        //         }
-        //     }
+                        // THỰC HIỆN KIỂM TRA XEM FILE TỒN TẠI VÀ XOÁ FILE CLOUD
+                        let {status } = await UtilCloudinary.exists(`${ConfigEnv.CLOUDINARY_DIRECTORY}/${imageName}`);
+                        if(status) {
+                            await UtilCloudinary.destroy(`${ConfigEnv.CLOUDINARY_DIRECTORY}/${imageName}`);
+                            break;
+                        }
+                    }
+                }
+            }
 
-        //     // THỰC HIỆN XOÁ FILE TRONG DB
-        //      category.model.images =  category.model.images.filter((image) => image !== photo);
-        //     await  category.model.save();
+            // THỰC HIỆN XOÁ FILE TRONG DB
+             featured.model.images =  featured.model.images.filter((image) => image !== photo);
+            await  featured.model.save();
 
-        //     cb({status: true, message: 'Delete photo image successfully'});
+            cb({status: true, message: 'Delete photo image successfully'});
 
-        // } catch (error) {
-        //     // THỰC HIỆN PHƯƠNG THỨC LỖI
-        //     cb({status: false, message: 'Method failed', error});
-        // }
+        } catch (error) {
+            // THỰC HIỆN PHƯƠNG THỨC LỖI
+            cb({status: false, message: 'Method failed', error});
+        }
     }
 }
 

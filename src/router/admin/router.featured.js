@@ -1,3 +1,4 @@
+"use strict"
 const router = require("express").Router();
 const { body } = require("express-validator");
 const ControllerFeatured = require("../../controller/admin/controller.featured");
@@ -6,21 +7,12 @@ router.get("/:limit/:start", ControllerFeatured.getFeatureds);
 router.get("/amount", ControllerFeatured.getAmount);
 router.get("/:feature", ControllerFeatured.getFeatureById);
 
-// TRUY XUẤT DANH MỤC CATEGORY
-// router.get("/", ControllerCategory.getCategoriesAll);
-
 // CREATE FEATURED
 router.post("/",[
     body('title').custom( async(val, {req}) => {
 
         // KIỂM TRA TITLE KHÔNG ĐƯỢC TRỐNG
         if(!val.trim()) throw Error("Title not empty");
-
-        // KIỂM TRA TITLE CÓ  ĐÃ ĐƯỢC SỬ DỤNG HAY CHƯA
-        // let categoryInfor = await ModelCategory.find({title: {$eq: val}});
-        // if(categoryInfor.length) {
-        //     throw Error("category exists already");
-        // }
 
         return true;
     }),
@@ -50,10 +42,10 @@ router.delete("/", [
     })
 ], ControllerFeatured.deleteFeature);
 
-// DELETE CATEGORY IMAGE
-// router.delete('/photo', [
-//     body("id").notEmpty().withMessage("ID category not empty"),
-//     body("photo").notEmpty().withMessage("ID category not empty")
-// ], ControllerCategory.deletePhoto);
+// DELETE FEATURE IMAGE
+router.delete('/photo', [
+    body("id").notEmpty().withMessage("ID featured not empty"),
+    body("photo").notEmpty().withMessage("ID featured not empty")
+], ControllerFeatured.deleteFeaturedPhoto);
 
 module.exports = router;
