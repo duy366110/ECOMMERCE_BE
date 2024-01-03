@@ -55,6 +55,16 @@ class ServiceProduct {
         }
     }
 
+    // TRUY XUẤT PRODUCT TỬ THEO ID
+    async findProductById(id) {
+        try {
+            return await ModelProduct.findById(id).exec();
+        } catch (error) {
+            // THỰC HIỆN PHƯƠNG THỨC LỖI
+            return null;
+        }
+    }
+
     // CARETE PRODUCT
     async create(product = {}, images = [], category, cb) {
         try {
@@ -117,7 +127,7 @@ class ServiceProduct {
         }
     }
 
-    // DELETE CATEGORY
+    // DELETE PRODUCT
     async delete(product = {}, cb) {
         try {
             if(product.model.images.length) {
@@ -150,16 +160,12 @@ class ServiceProduct {
     }
 
     // DELETE PHOTO PRODUCT
-    async deleteImage(product = {}, photo = '', cb) {
+    async deleteProductImage(product = {}, photo = '', cb) {
         try {
-            // KIỂM TRA ẢNH CÓ TỒN TẠI THỰC HIỆN XOÁ
             if(product.model.images.length) {
-
                 for(let image of product.model.images) {
                     if(image === photo) {
                         let imageName = image.split('/').splice(-1).join('').split(".")[0];
-
-                        // THỰC HIỆN KIỂM TRA XEM FILE TỒN TẠI VÀ XOÁ FILE CLOUD
                         let {status, result } = await UtilCloudinary.exists(`${ConfigEnv.CLOUDINARY_DIRECTORY}/${imageName}`);
                         if(status) {
                             await UtilCloudinary.destroy(`${ConfigEnv.CLOUDINARY_DIRECTORY}/${imageName}`);
@@ -168,13 +174,9 @@ class ServiceProduct {
                     }
                 }
             }
-
-            // THỰC HIỆN XOÁ FILE TRONG DB
-             product.model.images =  product.model.images.filter((image) => image !== photo);
+            product.model.images =  product.model.images.filter((image) => image !== photo);
             await  product.model.save();
-
             cb({status: true, message: 'Delete photo image successfully'});
-
         } catch (error) {
             // THỰC HIỆN PHƯƠNG THỨC LỖI
             cb({status: false, message: 'Method failed', error});
