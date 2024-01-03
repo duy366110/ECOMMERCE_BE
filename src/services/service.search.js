@@ -7,8 +7,12 @@ class ServiceSearch {
 
     constructor() { }
 
-    // SEẢCH SẢN PHẨM THEO TYPE CATEGỎY VÀ MẬT ĐỊNH
-    async searchProduct(search = {}, cb) {
+    /**
+     * SEARCH PRODUCT BY TYPE CATEGORY AND LIMIT
+     * @param {*} search 
+     * @param {*} cb 
+     */
+    async searchProductByTypeCategory(search = {}, cb) {
         try {
             let results = [];
             if(search.type === "all") {
@@ -18,7 +22,7 @@ class ServiceSearch {
                 })
 
             } else {
-                await ServiceProduct.getProductByCategoryLimit(search.type, search.limit, search.start, (information) => {
+                await ServiceProduct.getProductsByCategory(search.type, search.limit, search.start, (information) => {
                     let { status, products } = information;
                     results = status? products : [];
                 })
@@ -32,16 +36,17 @@ class ServiceSearch {
         }
     }
 
+    
+    /**
+     * SEARCH AMOUNT PRODUCT BY CATEGORY TYPE
+     * @param {*} category 
+     * @param {*} cb 
+     */
     async searchAmountProductByCategoryId(category = "", cb) {
         try {
-            cb({
-                status: true,
-                message: 'Search amount product successfully',
-                amount: await ServiceCategory.getAmountProductByCategoryId(category)
-            });
-
+            let amount = category === "all" ? await ServiceProduct.getProductAmount() : await ServiceCategory.getAmountProductByCategoryId(category);
+            cb({status: true, message: 'Search amount success', amount});
         } catch (error) {
-            // PHƯƠNG THỨC LỖI
             cb({status: false, message: 'Method failed', error});
         }
     }

@@ -11,7 +11,7 @@ class ServiceProduct {
     // LẤY DANH SÁCH PRODUCT
     async getLimit(limit, start, cb) {
         try {
-            let products = await ModelProduct.find({}).sort({createDate: 'desc'}).limit(limit).skip(start).populate(['category']).lean();
+            let products = await ModelProduct.find({}).sort({createDate: 'desc'}).skip(start).limit(limit).populate(['category']).lean();
             cb({status: true, message: 'Get products successfully', products});
 
         } catch (error) {
@@ -20,7 +20,14 @@ class ServiceProduct {
         }
     }
 
-    async getProductByCategoryLimit(category = "", limit, start, cb) {
+    /**
+     * SEARCH PRODUCT OF CATEGORY LIMIT
+     * @param {*} category 
+     * @param {*} limit 
+     * @param {*} start 
+     * @param {*} cb 
+     */
+    async getProductsByCategory(category = "", limit, start, cb) {
         try {
             let products = await ModelProduct
                 .find({
@@ -29,8 +36,9 @@ class ServiceProduct {
                     }
                 })
                 .sort({createDate: 'desc'})
+                .skip(start)
                 .limit(limit)
-                .skip(start).lean();
+                .lean();
             cb({status: true, message: 'Get products successfully', products});
 
         } catch (error) {
@@ -60,6 +68,18 @@ class ServiceProduct {
         } catch (error) {
             // THỰC HIỆN PHƯƠNG THỨC LỖI
             cb({status: false, message: 'Method failed', error});
+        }
+    }
+
+    /**
+     * GET AMOUNT PRODUCT
+     * @returns 
+     */
+    async getProductAmount() {
+        try {
+            return await ModelProduct.find({}).count().lean();
+        } catch (error) {
+            return 0;
         }
     }
 

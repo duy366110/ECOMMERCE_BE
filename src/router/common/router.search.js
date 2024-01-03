@@ -2,9 +2,11 @@
 const router = require('express').Router();
 const ControllerSearch = require("../../controller/common/controller.search");
 
-// TRUY XUẤT DANH SÁCH SẢN PHẨM THEO TYPE
-router.get("/:type/:limit/:start", ControllerSearch.searchProductByType);
-router.get("/:category", ControllerSearch.searchAmountCategory);
+// GET PRODUCT AMOUNT BY TYPE CATEGORY
+router.get("/product/amount", ControllerSearch.searchAmountProductByCategory);
+
+// GET PRODUCT BY CONDITION TYPE CATEGORY AND LIMT
+router.get("/:type/:limit/:start", ControllerSearch.searchProductByTypeCategory);
 
 // TRUY XUẤT DANH MỤC SẢN PHẨM THEO GIÁ TRỊ NGƯỜI DÙNG NHẬP VÀO
 router.post("/custom", ControllerSearch.searchProductByValueInput);
