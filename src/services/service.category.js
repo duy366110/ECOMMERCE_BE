@@ -55,6 +55,17 @@ class ServiceCategory {
         }
     }
 
+    async getAmountProductByCategoryId(category = "") {
+        try {
+            let categoryInfor = await ModelCategory.findById(category).lean();
+            return categoryInfor.collections.length;
+
+        } catch (error) {
+            // THỰC HIỆN PHƯƠNG THỨC LỖI
+            return null;
+        }
+    }
+
     // CARETE CATEGORY
     async create(category = {}, images, cb) {
         try {

@@ -1,4 +1,5 @@
 "use strict"
+const { ObjectId } = require("mongodb");
 const ModelProduct = require("../model/model.product");
 const ConfigEnv = require("../configs/config.env");
 const UtilCloudinary = require("../util/util.cloudinary");
@@ -11,6 +12,25 @@ class ServiceProduct {
     async getLimit(limit, start, cb) {
         try {
             let products = await ModelProduct.find({}).sort({createDate: 'desc'}).limit(limit).skip(start).populate(['category']).lean();
+            cb({status: true, message: 'Get products successfully', products});
+
+        } catch (error) {
+            // THỰC HIỆN PHƯƠNG THỨC LỖI
+            cb({status: false, message: 'Method failed', error});
+        }
+    }
+
+    async getProductByCategoryLimit(category = "", limit, start, cb) {
+        try {
+            let products = await ModelProduct
+                .find({
+                    category: {
+                        $eq: new ObjectId(category)
+                    }
+                })
+                .sort({createDate: 'desc'})
+                .limit(limit)
+                .skip(start).lean();
             cb({status: true, message: 'Get products successfully', products});
 
         } catch (error) {
