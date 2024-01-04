@@ -38,6 +38,7 @@ class ServiceProduct {
                 .sort({createDate: 'desc'})
                 .skip(start)
                 .limit(limit)
+                .populate(['category'])
                 .lean();
             cb({status: true, message: 'Get products successfully', products});
 
