@@ -17,6 +17,33 @@ class ServiceOrder {
         }
     }
 
+
+    /**
+     * Get information order amount and total all order.
+     * @param {*} cb 
+     */
+    async getInformation(cb) {
+        try {
+            let orders = await ModelOrder.find({}).sort({data: 'desc'}).populate(['order.product']).lean();
+            let amount = orders.length;
+            let total = 0;
+
+            if(amount) {
+                orders.forEach((elm) => {
+                    total = elm.order.reduce((acc, infor) => {
+                            return acc += Number(infor.quantity) * Number(infor.product.price);
+                        }, 0).toFixed(6)
+                 })
+            }
+
+            cb({status: true, message: 'Get information successfully', amount, total});
+
+        } catch (error) {
+            // THỰC HIỆN PHƯƠNG THỨC LỖI
+            cb({status: false, message: 'Method failed', error});
+        }
+    }
+
     // LẤY SỐ LƯỢNG ORDER
     async getAmount(cb) {
         try {
@@ -50,7 +77,7 @@ class ServiceOrder {
             cb({status: true, message: 'Create order done', order: orderInfor});
 
         } catch (error) {
-            // THỰC HIỆN PHƯƠNG THỨC LỖI
+            // THỰC HIỆN PHƯƠNG THỨC LỖIs
             cb({status: false, message: 'Method failed', error});
         }
     }
